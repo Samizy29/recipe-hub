@@ -1,0 +1,32 @@
+:root {
+  --primary-color: #ff7043;
+  --secondary-color: #fff3e0;
+  --text-color: #333;
+  --font-main: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  color: var(--text-color);
+}
+
+header, footer {
+  background: var(--secondary-color);
+  padding: 1rem;
+  text-align: center;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline;
+  margin: 0 10px;
+}
+
+main {
+  padding: 1rem;
+}

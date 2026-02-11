@@ -4,25 +4,32 @@ export class CookingTimer {
         this.timer = null;
         this.timeLeft = 0;
         this.isRunning = false;
+        this.isMinimized = false;
     }
 
     render() {
         this.container.innerHTML = `
-            <div class="cooking-timer">
-                <h3>Cooking Timer</h3>
+            <div class="cooking-timer ${this.isMinimized ? 'minimized' : ''}">
+                ${!this.isMinimized ? `
+                    <button class="timer-minimize-btn" id="minimize-timer">−</button>
+                ` : ''}
                 <div class="timer-display">${this.formatTime(this.timeLeft)}</div>
-                <div class="timer-controls">
-                    <input type="number" id="timer-minutes" placeholder="Minutes" min="1" max="120">
-                    <button id="start-timer" ${this.isRunning ? 'disabled' : ''}>Start</button>
-                    <button id="pause-timer" ${!this.isRunning ? 'disabled' : ''}>Pause</button>
-                    <button id="reset-timer">Reset</button>
-                </div>
-                <div class="timer-presets">
-                    <button data-minutes="5">5 min</button>
-                    <button data-minutes="10">10 min</button>
-                    <button data-minutes="15">15 min</button>
-                    <button data-minutes="30">30 min</button>
-                </div>
+                ${!this.isMinimized ? `
+                    <div class="timer-controls">
+                        <input type="number" id="timer-minutes" placeholder="Minutes" min="1" max="120">
+                        <button id="start-timer" ${this.isRunning ? 'disabled' : ''}>Start</button>
+                        <button id="pause-timer" ${!this.isRunning ? 'disabled' : ''}>Pause</button>
+                        <button id="reset-timer">Reset</button>
+                    </div>
+                    <div class="timer-presets">
+                        <button data-minutes="5">5 min</button>
+                        <button data-minutes="10">10 min</button>
+                        <button data-minutes="15">15 min</button>
+                        <button data-minutes="30">30 min</button>
+                    </div>
+                ` : `
+                    <button class="timer-expand-btn" id="expand-timer">+</button>
+                `}
             </div>
         `;
 
@@ -30,28 +37,44 @@ export class CookingTimer {
     }
 
     attachEvents() {
-        const startBtn = this.container.querySelector('#start-timer');
-        const pauseBtn = this.container.querySelector('#pause-timer');
-        const resetBtn = this.container.querySelector('#reset-timer');
-        const minutesInput = this.container.querySelector('#timer-minutes');
+        if (!this.isMinimized) {
+            const startBtn = this.container.querySelector('#start-timer');
+            const pauseBtn = this.container.querySelector('#pause-timer');
+            const resetBtn = this.container.querySelector('#reset-timer');
+            const minutesInput = this.container.querySelector('#timer-minutes');
 
-        startBtn?.addEventListener('click', () => {
-            const minutes = parseInt(minutesInput.value) || 0;
-            if (minutes > 0 && !this.isRunning) {
-                this.timeLeft = minutes * 60;
-                this.start();
-            }
+            startBtn?.addEventListener('click', () => {
+                const minutes = parseInt(minutesInput.value) || 0;
+                if (minutes > 0 && !this.isRunning) {
+                    this.timeLeft = minutes * 60;
+                    this.start();
+                }
+            });
+
+            pauseBtn?.addEventListener('click', () => this.pause());
+            resetBtn?.addEventListener('click', () => this.reset());
+
+            this.container.querySelectorAll('.timer-presets button').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const minutes = parseInt(e.target.dataset.minutes);
+                    this.timeLeft = minutes * 60;
+                    this.updateDisplay();
+                });
+            });
+        }
+
+        // Minimize button
+        const minimizeBtn = this.container.querySelector('#minimize-timer');
+        minimizeBtn?.addEventListener('click', () => {
+            this.isMinimized = true;
+            this.render();
         });
 
-        pauseBtn?.addEventListener('click', () => this.pause());
-        resetBtn?.addEventListener('click', () => this.reset());
-
-        this.container.querySelectorAll('.timer-presets button').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const minutes = parseInt(e.target.dataset.minutes);
-                this.timeLeft = minutes * 60;
-                this.updateDisplay();
-            });
+        // Expand button
+        const expandBtn = this.container.querySelector('#expand-timer');
+        expandBtn?.addEventListener('click', () => {
+            this.isMinimized = false;
+            this.render();
         });
     }
 
@@ -86,7 +109,7 @@ export class CookingTimer {
         this.pause();
         this.timeLeft = 0;
         this.updateDisplay();
-        alert('Timer complete! ⏰');
+        alert('⏰ Timer complete!');
     }
 
     updateDisplay() {

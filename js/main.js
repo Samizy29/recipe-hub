@@ -1,11 +1,14 @@
+// Remove any duplicate imports - you should only have ONE of each
 import { fetchRecipes } from './api.js';
-import { RecipeSearch } from './recipes.js';
-import { RecipeDetail } from './recipe-detail.js';
-import { SavedRecipesView } from './saved-recipes.js';
-import { ShoppingList } from './shopping-list.js';
-import { MealPlanner } from './meal-planner.js';
+import { RecipeSearch, renderRecipes } from './recipes.js';
 import { CookingTimer } from './cooking-timer.js';
 import { DietaryFilters } from './dietary-filters.js';
+
+// Comment out these if they don't exist yet or are causing errors
+// import { RecipeDetail } from './recipe-detail.js';
+// import { SavedRecipesView } from './saved-recipes.js';
+// import { ShoppingList } from './shopping-list.js';
+// import { MealPlanner } from './meal-planner.js';
 
 class App {
     constructor() {
@@ -14,102 +17,77 @@ class App {
     }
 
     init() {
-        this.setupRouting();
+        console.log('App initializing...');
         this.setupComponents();
-        
-        // Load default view if no hash
-        if (!window.location.hash) {
-            window.location.hash = '#/';
-        }
-    }
-
-    setupRouting() {
-        window.addEventListener('hashchange', () => this.handleRoute());
-        window.addEventListener('load', () => this.handleRoute());
-    }
-
-    handleRoute() {
-        const hash = window.location.hash.slice(1) || '/';
-        console.log('Navigating to:', hash);
-
-        switch(true) {
-            case hash === '/' || hash === '/search':
-                this.renderSearchView();
-                break;
-            case hash === '/favorites':
-                this.renderFavoritesView();
-                break;
-            case hash === '/shopping-list':
-                this.renderShoppingListView();
-                break;
-            case hash === '/meal-planner':
-                this.renderMealPlannerView();
-                break;
-            case hash.startsWith('/recipe/'):
-                const id = hash.split('/')[2];
-                this.renderRecipeDetailView(id);
-                break;
-            default:
-                this.renderSearchView();
-        }
+        this.loadSampleRecipes();
     }
 
     setupComponents() {
         // Initialize timer widget
         const timerWidget = document.getElementById('timer-widget');
+        console.log('Timer widget element:', timerWidget);
+        
         if (timerWidget) {
-            this.timer = new CookingTimer(timerWidget);
-            this.timer.render();
+            try {
+                this.timer = new CookingTimer(timerWidget);
+                this.timer.render();
+                console.log('Timer rendered successfully');
+            } catch (error) {
+                console.error('Error rendering timer:', error);
+            }
         }
 
         // Initialize filters widget
         const filtersWidget = document.getElementById('filters-widget');
+        console.log('Filters widget element:', filtersWidget);
+        
         if (filtersWidget) {
-            this.filters = new DietaryFilters(
-                filtersWidget,
-                (activeFilters) => this.filterRecipes(activeFilters)
-            );
-            this.filters.render();
+            try {
+                filtersWidget.innerHTML = `
+                    <div class="dietary-filters">
+                        <h3>Dietary Preferences</h3>
+                        <div class="filters-grid">
+                            <label><input type="checkbox"> 🌱 Vegetarian</label>
+                            <label><input type="checkbox"> 🌾 Gluten Free</label>
+                            <label><input type="checkbox"> 🥛 Dairy Free</label>
+                        </div>
+                    </div>
+                `;
+                console.log('Filters rendered successfully');
+            } catch (error) {
+                console.error('Error rendering filters:', error);
+            }
         }
     }
 
-    renderSearchView() {
-        this.app.innerHTML = '';
-        const search = new RecipeSearch(this.app);
-        search.render();
-    }
-
-    renderFavoritesView() {
-        this.app.innerHTML = '';
-        const favorites = new SavedRecipesView(this.app);
-        favorites.render();
-    }
-
-    renderRecipeDetailView(id) {
-        this.app.innerHTML = '';
-        const detail = new RecipeDetail(this.app);
-        detail.render(id);
-    }
-
-    renderShoppingListView() {
-        this.app.innerHTML = '';
-        const shoppingList = new ShoppingList(this.app);
-        shoppingList.render();
-    }
-
-    renderMealPlannerView() {
-        this.app.innerHTML = '';
-        const planner = new MealPlanner(this.app);
-        planner.render();
-    }
-
-    filterRecipes(filters) {
-        const event = new CustomEvent('filtersChanged', { detail: filters });
-        window.dispatchEvent(event);
+    async loadSampleRecipes() {
+        console.log('Loading sample recipes...');
+        this.app.innerHTML = '<div class="loading">Loading delicious recipes...</div>';
+        
+        try {
+            const recipes = await fetchRecipes('pasta');
+            console.log('Recipes loaded:', recipes);
+            
+            if (recipes && recipes.length > 0) {
+                renderRecipes(recipes, this.app);
+            } else {
+                this.app.innerHTML = '<div class="empty-state">No recipes found. Try searching for something else!</div>';
+            }
+        } catch (error) {
+            console.error('Error loading recipes:', error);
+            this.app.innerHTML = `
+                <div class="empty-state">
+                    <span class="empty-icon">🍳</span>
+                    <h3>Unable to load recipes</h3>
+                    <p>Please check your connection and try again</p>
+                </div>
+            `;
+        }
     }
 }
 
-// Initialize app when DOM is ready
+// Start the app
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM ready, starting app...');
     new App();
 });

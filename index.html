@@ -32,6 +32,19 @@
 
   <footer>
     <p>&copy; 2026 Recipe Hub</p>
+    <!-- Test Controls - Only visible in development -->
+<div id="test-controls" style="display: none;" class="development-only">
+    <button onclick="window.testRunner?.runAllTests()">🧪 Run Tests</button>
+    <button onclick="StorageTest.testPersistence()">💾 Test Storage</button>
+    <button onclick="EdgeCaseTester.testAllEdgeCases()">⚡ Test Edge Cases</button>
+</div>
+
+<script>
+    // Show test controls in development
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        document.getElementById('test-controls').style.display = 'block';
+    }
+</script>
   </footer>
 
   <script type="module" src="js/main.js"></script>

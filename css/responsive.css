@@ -1,0 +1,181 @@
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+    .app-container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        order: -1;
+        margin-bottom: 1rem;
+    }
+
+    .recipes-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .recipe-detail {
+        padding: 1rem;
+    }
+
+    .recipe-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .recipe-meta {
+        flex-wrap: wrap;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .nav-links li {
+        flex: 1 1 calc(50% - 0.5rem);
+        text-align: center;
+    }
+
+    .meal-grid {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+
+    .meal-header,
+    .meal-row {
+        display: block;
+    }
+
+    .day-name,
+    .meal-slot {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    .filters-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .timer-controls {
+        flex-direction: column;
+    }
+
+    .timer-presets {
+        flex-wrap: wrap;
+    }
+
+    .shopping-item {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .quantity {
+        margin-left: 0;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .recipes-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .filters-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .recipe-detail img {
+        height: auto;
+        max-height: 200px;
+    }
+
+    .nav-brand h1 {
+        font-size: 1.5rem;
+    }
+
+    .empty-state {
+        padding: 2rem 1rem;
+    }
+
+    .timer-display {
+        font-size: 2.5rem;
+    }
+
+    .instruction-step {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .step-number {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Touch-friendly improvements */
+@media (hover: none) and (pointer: coarse) {
+    button,
+    .recipe-card,
+    .nav-links a {
+        padding: 0.75rem 1rem; /* Larger touch targets */
+        min-height: 44px; /* Apple's recommended minimum */
+    }
+
+    input[type="checkbox"],
+    input[type="radio"] {
+        width: 20px;
+        height: 20px;
+    }
+
+    .filter-checkbox {
+        padding: 0.5rem;
+    }
+}
+
+/* Landscape mode adjustments */
+@media screen and (max-height: 600px) and (orientation: landscape) {
+    .sidebar {
+        position: sticky;
+        top: 0;
+        max-height: 100vh;
+        overflow-y: auto;
+    }
+
+    .recipe-detail {
+        padding-bottom: 3rem;
+    }
+}
+
+/* Responsive images */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Fluid typography */
+html {
+    font-size: 16px;
+}
+
+@media screen and (max-width: 320px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+/* Responsive tables alternative */
+.meal-grid,
+.recipes-grid {
+    display: grid;
+    width: 100%;
+}
+
+/* Safe area insets for modern mobile devices */
+@supports (padding: max(0px)) {
+    body {
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
+}

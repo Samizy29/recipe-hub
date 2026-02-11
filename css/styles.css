@@ -1,4 +1,10 @@
-:root {
+/* Import all CSS files */
+@import 'responsive.css';
+@import 'ui-fixes.css';
+
+/* Your existing styles below */
+ 
+ :root {
   --primary-color: #ff7043;
   --secondary-color: #fff3e0;
   --text-color: #333;

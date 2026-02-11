@@ -7,18 +7,28 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-
   <header>
-    <h1>Recipe Hub</h1>
-    <nav>
-      <ul>
-        <li><a href="#">Search</a></li>
-        <li><a href="#">Favorites</a></li>
+    <nav class="main-nav">
+      <div class="nav-brand">
+        <h1>🍳 Recipe Hub</h1>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#/">Search</a></li>
+        <li><a href="#/favorites">Favorites</a></li>
+        <li><a href="#/shopping-list">Shopping List</a></li>
+        <li><a href="#/meal-planner">Meal Planner</a></li>
       </ul>
     </nav>
   </header>
 
-  <main id="app"></main>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div id="filters-widget"></div>
+      <div id="timer-widget"></div>
+    </aside>
+
+    <main id="app"></main>
+  </div>
 
   <footer>
     <p>&copy; 2026 Recipe Hub</p>

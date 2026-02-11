@@ -94,3 +94,40 @@ export class ShoppingList {
         });
     }
 }
+        const SHOPPING_LIST_KEY = 'shopping_list';
+
+export class ShoppingList {
+    constructor(container) {
+        this.container = container;
+        this.items = this.loadItems();
+    }
+
+    loadItems() {
+        const saved = localStorage.getItem(SHOPPING_LIST_KEY);
+        return saved ? JSON.parse(saved) : [];
+    }
+
+    saveItems() {
+        localStorage.setItem(SHOPPING_LIST_KEY, JSON.stringify(this.items));
+    }
+
+    addIngredients(ingredients) {
+        ingredients.forEach(ing => {
+            this.items.push({
+                id: Date.now() + Math.random(),
+                name: ing.name,
+                quantity: 1,
+                unit: '',
+                checked: false
+            });
+        });
+        this.saveItems();
+        
+        // If container exists, re-render
+        if (this.container) {
+            this.render();
+        }
+    }
+
+    // ... rest of the ShoppingList class implementation
+}

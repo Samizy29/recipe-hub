@@ -8,20 +8,21 @@ export class RecipeDetail {
         this.recipe = null;
     }
 
-    async render(recipeId) {
-        this.recipeId = recipeId;
+    async render(id) {
+        this.recipeId = id;
         this.container.innerHTML = '<div class="loading">Loading recipe details...</div>';
         
         try {
-            this.recipe = await getRecipeById(recipeId);
+            console.log('Fetching recipe:', id);
+            this.recipe = await getRecipeById(id);
+            console.log('Recipe loaded:', this.recipe);
             this.displayRecipe();
         } catch (error) {
             console.error('Error loading recipe:', error);
             this.container.innerHTML = `
                 <div class="error-state">
-                    <span class="error-icon">❌</span>
-                    <h3>Failed to load recipe</h3>
-                    <p>Please try again later</p>
+                    <h2>❌ Failed to load recipe</h2>
+                    <p>${error.message || 'Please try again'}</p>
                     <button onclick="window.location.hash='#/'" class="btn-primary">
                         Back to Search
                     </button>
@@ -35,6 +36,10 @@ export class RecipeDetail {
         
         this.container.innerHTML = `
             <div class="recipe-detail">
+                <button onclick="window.location.hash='#/'" class="back-btn">
+                    ← Back to Search
+                </button>
+                
                 <div class="recipe-header">
                     <h1>${this.recipe.title}</h1>
                     <button class="favorite-btn ${isFav ? 'active' : ''}" data-id="${this.recipe.id}">
@@ -43,11 +48,11 @@ export class RecipeDetail {
                 </div>
                 
                 <div class="recipe-meta">
-                    <span>⏱️ ${this.recipe.readyInMinutes || 'N/A'} mins</span>
-                    <span>👥 Serves ${this.recipe.servings || 'N/A'}</span>
+                    <span>⏱️ ${this.recipe.readyInMinutes || '30'} mins</span>
+                    <span>👥 Serves ${this.recipe.servings || '4'}</span>
                 </div>
 
-                <img src="${this.recipe.image}" alt="${this.recipe.title}">
+                <img src="${this.recipe.image}" alt="${this.recipe.title}" class="recipe-detail-image">
                 
                 <div class="recipe-section">
                     <h2>Ingredients</h2>
@@ -59,7 +64,7 @@ export class RecipeDetail {
                                     ${ing.original}
                                 </label>
                             </li>
-                        `).join('') || '<p>No ingredients available</p>'}
+                        `).join('') || '<li>No ingredients available</li>'}
                     </ul>
                     <button id="add-to-shopping-list" class="btn-secondary">
                         🛒 Add Selected to Shopping List
@@ -69,12 +74,7 @@ export class RecipeDetail {
                 <div class="recipe-section">
                     <h2>Instructions</h2>
                     <div class="instructions">
-                        ${this.recipe.analyzedInstructions?.[0]?.steps?.map(step => `
-                            <div class="instruction-step">
-                                <span class="step-number">${step.number}</span>
-                                <p>${step.step}</p>
-                            </div>
-                        `).join('') || '<p>No instructions available</p>'}
+                        ${this.renderInstructions()}
                     </div>
                 </div>
             </div>
@@ -83,12 +83,29 @@ export class RecipeDetail {
         this.attachEvents();
     }
 
+    renderInstructions() {
+        if (!this.recipe.analyzedInstructions || this.recipe.analyzedInstructions.length === 0) {
+            return '<p>No instructions available for this recipe.</p>';
+        }
+
+        return this.recipe.analyzedInstructions[0].steps.map(step => `
+            <div class="instruction-step">
+                <span class="step-number">${step.number}</span>
+                <p>${step.step}</p>
+            </div>
+        `).join('');
+    }
+
     attachEvents() {
         const favBtn = this.container.querySelector('.favorite-btn');
-        favBtn?.addEventListener('click', () => this.toggleFavorite());
+        if (favBtn) {
+            favBtn.addEventListener('click', () => this.toggleFavorite());
+        }
 
         const addToListBtn = this.container.querySelector('#add-to-shopping-list');
-        addToListBtn?.addEventListener('click', () => this.addToShoppingList());
+        if (addToListBtn) {
+            addToListBtn.addEventListener('click', () => this.addToShoppingList());
+        }
     }
 
     toggleFavorite() {
@@ -114,7 +131,7 @@ export class RecipeDetail {
     addToShoppingList() {
         const selectedIngredients = [];
         this.container.querySelectorAll('.ingredient-checkbox:checked').forEach(cb => {
-            const label = cb.closest('label').textContent.trim();
+            const label = cb.closest('label')?.textContent.trim() || 'Unknown ingredient';
             selectedIngredients.push({
                 name: label,
                 checked: false
@@ -122,11 +139,14 @@ export class RecipeDetail {
         });
 
         if (selectedIngredients.length > 0) {
-            // Import ShoppingList dynamically to avoid circular dependency
+            // Import ShoppingList dynamically
             import('./shopping-list.js').then(module => {
                 const shoppingList = new module.ShoppingList();
                 shoppingList.addIngredients(selectedIngredients);
-                alert(`${selectedIngredients.length} ingredients added to shopping list!`);
+                alert(`✅ ${selectedIngredients.length} ingredients added to shopping list!`);
+            }).catch(err => {
+                console.error('Error loading shopping list:', err);
+                alert('Shopping list feature coming soon!');
             });
         } else {
             alert('Please select ingredients to add to your shopping list');

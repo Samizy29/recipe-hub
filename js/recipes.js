@@ -1,10 +1,9 @@
-import { fetchRecipes, fetchRecipesByIngredients } from './api.js';
-import { getFavorites } from './favorites.js';
+import { fetchRecipes } from "./api.js";
 
 export class RecipeSearch {
     constructor(container) {
         this.container = container;
-        this.currentQuery = 'pasta'; // default search
+        this.currentQuery = 'pasta';
     }
 
     render() {
@@ -16,22 +15,16 @@ export class RecipeSearch {
                         <input 
                             type="text" 
                             id="search-input" 
-                            placeholder="Search for recipes (e.g., pasta, tomato)"
+                            placeholder="Search for recipes..."
                             value="${this.currentQuery}"
                         />
                         <button id="search-btn">🔍 Search</button>
                     </div>
-                    <p class="search-hint">Try: pasta, tomato, chicken, rice</p>
                 </div>
                 <div id="recipes-container" class="loading">Loading recipes...</div>
             </div>
         `;
 
-        this.attachEvents();
-        this.loadRecipes();
-    }
-
-    attachEvents() {
         const searchBtn = this.container.querySelector('#search-btn');
         const searchInput = this.container.querySelector('#search-input');
 
@@ -46,6 +39,8 @@ export class RecipeSearch {
                 this.loadRecipes();
             }
         });
+
+        this.loadRecipes();
     }
 
     async loadRecipes() {
@@ -53,70 +48,57 @@ export class RecipeSearch {
         container.innerHTML = '<div class="loading">Loading recipes...</div>';
         
         try {
-            // Try complexSearch first
-            let recipes = await fetchRecipes(this.currentQuery);
+            const recipes = await fetchRecipes(this.currentQuery);
             
-            // If no results, try ingredients search
             if (!recipes || recipes.length === 0) {
-                recipes = await fetchRecipesByIngredients(this.currentQuery);
+                container.innerHTML = '<div class="empty-state">No recipes found</div>';
+                return;
             }
-            
-            renderRecipes(recipes, container);
-        } catch (error) {
-            console.error('Failed to load recipes:', error);
+
             container.innerHTML = `
-                <div class="error-state">
-                    <span class="error-icon">❌</span>
-                    <h3>Failed to load recipes</h3>
-                    <p>${error.message || 'Please try again later'}</p>
-                    <button onclick="window.location.reload()" class="btn-primary">
-                        Try Again
-                    </button>
+                <div class="recipes-grid">
+                    ${recipes.map(recipe => `
+                        <div class="recipe-card">
+                            <img src="${recipe.image}" alt="${recipe.title}">
+                            <div class="recipe-info">
+                                <h3>${recipe.title}</h3>
+                                <span class="time">⏱️ ${recipe.readyInMinutes || '30'} mins</span>
+                                <button 
+                                    class="view-recipe-btn" 
+                                    onclick="window.location.hash='#/recipe/${recipe.id}'"
+                                >
+                                    View Recipe
+                                </button>
+                            </div>
+                        </div>
+                    `).join('')}
                 </div>
             `;
+        } catch (error) {
+            console.error('Error:', error);
+            container.innerHTML = '<div class="error-state">Failed to load recipes</div>';
         }
     }
 }
 
+// For backward compatibility
 export function renderRecipes(recipes, container) {
-    if (!recipes || recipes.length === 0) {
-        container.innerHTML = `
-            <div class="empty-state">
-                <span class="empty-icon">🔍</span>
-                <h3>No recipes found</h3>
-                <p>Try searching with different keywords</p>
-            </div>
-        `;
-        return;
-    }
-
-    const favorites = getFavorites();
-    const favoritesIds = favorites.map(f => f.id);
-
+    if (!container) return;
+    
     container.innerHTML = `
         <div class="recipes-grid">
             ${recipes.map(recipe => `
-                <div class="recipe-card" data-id="${recipe.id}">
-                    <img 
-                        src="${recipe.image || 'https://spoonacular.com/recipe-images/placeholder.jpg'}" 
-                        alt="${recipe.title}"
-                        loading="lazy"
-                        onerror="this.src='https://via.placeholder.com/312x231?text=Recipe+Image'"
-                    >
+                <div class="recipe-card">
+                    <img src="${recipe.image}" alt="${recipe.title}">
                     <div class="recipe-info">
-                        <h3 title="${recipe.title}">${recipe.title}</h3>
-                        <span class="time">⏱️ ${recipe.readyInMinutes || recipe.readyInMinutes || '30'} mins</span>
-                        <div class="recipe-actions">
-                            <button 
-                                class="view-recipe-btn" 
-                                onclick="window.location.hash='#/recipe/${recipe.id}'"
-                            >
-                                View Recipe
-                            </button>
-                            <span class="favorite-indicator ${favoritesIds.includes(recipe.id) ? 'active' : ''}">
-                                ${favoritesIds.includes(recipe.id) ? '★' : '☆'}
-                            </span>
-                        </div>
+                        <h3>${recipe.title}</h3>
+                        <span class="time">⏱️ ${recipe.readyInMinutes || '30'} mins</span>
+                        <button 
+                            class="view-recipe-btn" 
+                            onclick="window.location.hash='#/recipe/${recipe.id}'"
+                        >
+                            View Recipe
+                        </button>
                     </div>
                 </div>
             `).join('')}

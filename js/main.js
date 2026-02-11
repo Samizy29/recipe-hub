@@ -1,14 +1,6 @@
-// Remove any duplicate imports - you should only have ONE of each
-import { fetchRecipes } from './api.js';
+import { fetchRecipes } from "./api.js";
 import { RecipeSearch, renderRecipes } from './recipes.js';
 import { CookingTimer } from './cooking-timer.js';
-import { DietaryFilters } from './dietary-filters.js';
-
-// Comment out these if they don't exist yet or are causing errors
-// import { RecipeDetail } from './recipe-detail.js';
-// import { SavedRecipesView } from './saved-recipes.js';
-// import { ShoppingList } from './shopping-list.js';
-// import { MealPlanner } from './meal-planner.js';
 
 class App {
     constructor() {
@@ -17,77 +9,109 @@ class App {
     }
 
     init() {
-        console.log('App initializing...');
+        console.log('App starting...');
         this.setupComponents();
-        this.loadSampleRecipes();
+        this.setupRouting();
+        
+        if (!window.location.hash) {
+            window.location.hash = '#/';
+        }
+    }
+
+    setupRouting() {
+        window.addEventListener('hashchange', () => this.handleRoute());
+        window.addEventListener('load', () => this.handleRoute());
+    }
+
+    handleRoute() {
+        const hash = window.location.hash.slice(1) || '/';
+        console.log('Route:', hash);
+
+        if (hash.startsWith('/recipe/')) {
+            const id = hash.split('/')[2];
+            this.renderRecipeDetail(id);
+            return;
+        }
+
+        switch(hash) {
+            case '/':
+            case '/search':
+                this.renderSearch();
+                break;
+            default:
+                this.renderSearch();
+        }
     }
 
     setupComponents() {
-        // Initialize timer widget
+        // Timer widget
         const timerWidget = document.getElementById('timer-widget');
-        console.log('Timer widget element:', timerWidget);
-        
         if (timerWidget) {
             try {
                 this.timer = new CookingTimer(timerWidget);
                 this.timer.render();
-                console.log('Timer rendered successfully');
-            } catch (error) {
-                console.error('Error rendering timer:', error);
+            } catch (e) {
+                console.error('Timer error:', e);
             }
         }
 
-        // Initialize filters widget
+        // Filters widget - simple version
         const filtersWidget = document.getElementById('filters-widget');
-        console.log('Filters widget element:', filtersWidget);
-        
         if (filtersWidget) {
-            try {
-                filtersWidget.innerHTML = `
-                    <div class="dietary-filters">
-                        <h3>Dietary Preferences</h3>
-                        <div class="filters-grid">
-                            <label><input type="checkbox"> 🌱 Vegetarian</label>
-                            <label><input type="checkbox"> 🌾 Gluten Free</label>
-                            <label><input type="checkbox"> 🥛 Dairy Free</label>
-                        </div>
+            filtersWidget.innerHTML = `
+                <div class="dietary-filters">
+                    <h3>Dietary Preferences</h3>
+                    <div class="filters-grid">
+                        <label><input type="checkbox"> 🌱 Vegetarian</label>
+                        <label><input type="checkbox"> 🌾 Gluten Free</label>
+                        <label><input type="checkbox"> 🥛 Dairy Free</label>
                     </div>
-                `;
-                console.log('Filters rendered successfully');
-            } catch (error) {
-                console.error('Error rendering filters:', error);
-            }
-        }
-    }
-
-    async loadSampleRecipes() {
-        console.log('Loading sample recipes...');
-        this.app.innerHTML = '<div class="loading">Loading delicious recipes...</div>';
-        
-        try {
-            const recipes = await fetchRecipes('pasta');
-            console.log('Recipes loaded:', recipes);
-            
-            if (recipes && recipes.length > 0) {
-                renderRecipes(recipes, this.app);
-            } else {
-                this.app.innerHTML = '<div class="empty-state">No recipes found. Try searching for something else!</div>';
-            }
-        } catch (error) {
-            console.error('Error loading recipes:', error);
-            this.app.innerHTML = `
-                <div class="empty-state">
-                    <span class="empty-icon">🍳</span>
-                    <h3>Unable to load recipes</h3>
-                    <p>Please check your connection and try again</p>
                 </div>
             `;
         }
     }
+
+    renderSearch() {
+        this.app.innerHTML = '';
+        const search = new RecipeSearch(this.app);
+        search.render();
+    }
+
+    async renderRecipeDetail(id) {
+        this.app.innerHTML = '<div class="loading">Loading recipe...</div>';
+        
+        try {
+            const { getRecipeById } = await import('./api.js');
+            const recipe = await getRecipeById(id);
+            
+            this.app.innerHTML = `
+                <div class="recipe-detail">
+                    <button onclick="window.location.hash='#/'" class="back-btn">← Back</button>
+                    <h1>${recipe.title}</h1>
+                    <img src="${recipe.image}" alt="${recipe.title}">
+                    <h2>Ingredients</h2>
+                    <ul>
+                        ${recipe.extendedIngredients?.map(ing => 
+                            `<li>${ing.original}</li>`
+                        ).join('') || '<li>No ingredients</li>'}
+                    </ul>
+                    <h2>Instructions</h2>
+                    <div>
+                        ${recipe.analyzedInstructions?.[0]?.steps?.map(step => 
+                            `<p>${step.number}. ${step.step}</p>`
+                        ).join('') || '<p>No instructions</p>'}
+                    </div>
+                </div>
+            `;
+        } catch (error) {
+            console.error('Recipe detail error:', error);
+            this.app.innerHTML = '<div class="error-state">Failed to load recipe</div>';
+        }
+    }
 }
 
-// Start the app
+// Start app
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM ready, starting app...');
+    console.log('DOM ready');
     new App();
 });

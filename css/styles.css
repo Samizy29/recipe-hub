@@ -1227,3 +1227,792 @@ footer {
     background: #f38585;
     box-shadow: 0 0 15px rgba(224, 145, 145, 0.4);
 }
+
+/* ============================================ */
+/* =====  STUNNING FAVORITES VIEW STYLES  ===== */
+/* ============================================ */
+
+.favorites-view {
+    padding: 1rem;
+}
+
+.favorites-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.favorites-header h1 {
+    font-size: 2.2rem;
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+}
+
+.favorites-count {
+    background: rgba(255, 107, 107, 0.1);
+    padding: 0.5rem 1.2rem;
+    border-radius: 40px;
+    font-weight: 600;
+    color: #ff6b6b;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    backdrop-filter: blur(5px);
+}
+
+/* Sort dropdown */
+.sort-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.sort-controls label {
+    color: #666;
+    font-weight: 500;
+}
+
+.sort-controls select {
+    padding: 0.6rem 2rem 0.6rem 1rem;
+    border: 2px solid #ffe0e0;
+    border-radius: 30px;
+    font-size: 0.95rem;
+    background: white;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff6b6b'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+    background-size: 1.2rem;
+}
+
+.sort-controls select:focus {
+    border-color: #ff6b6b;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+}
+
+/* Favorites grid – same as search grid but we enhance cards */
+.favorites-view .recipes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.8rem;
+    margin-top: 1.5rem;
+}
+
+/* Enhanced recipe card for favorites */
+.favorites-view .recipe-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    border: 1px solid rgba(255,107,107,0.1);
+}
+
+.favorites-view .recipe-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 30px rgba(255,107,107,0.2);
+    border-color: #ff6b6b;
+}
+
+.favorites-view .recipe-card img {
+    height: 180px;
+    object-fit: cover;
+    width: 100%;
+    transition: transform 0.5s;
+}
+
+.favorites-view .recipe-card:hover img {
+    transform: scale(1.05);
+}
+
+.favorites-view .recipe-info {
+    padding: 1.2rem;
+    background: white;
+    position: relative;
+}
+
+.favorites-view .recipe-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-weight: 600;
+    line-height: 1.4;
+    max-height: 2.8rem;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.favorites-view .time {
+    display: inline-block;
+    background: #fff0f0;
+    padding: 0.3rem 0.8rem;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    color: #ff6b6b;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.favorites-view .saved-date {
+    display: block;
+    font-size: 0.75rem;
+    color: #999;
+    margin-top: 0.3rem;
+}
+
+.favorites-view .card-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.favorites-view .view-recipe-btn {
+    flex: 2;
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 0.7rem 1rem;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 5px 10px rgba(255,107,107,0.2);
+}
+
+.favorites-view .view-recipe-btn:hover {
+    background: #ff5252;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(255,107,107,0.3);
+}
+
+.favorites-view .remove-fav-btn {
+    flex: 1;
+    background: white;
+    color: #ff6b6b;
+    border: 2px solid #ff6b6b;
+    padding: 0.7rem;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.favorites-view .remove-fav-btn:hover {
+    background: #ff6b6b;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(255,107,107,0.3);
+}
+
+/* Empty state for favorites – already styled in .empty-state but we can enhance */
+.favorites-view .empty-state {
+    background: linear-gradient(145deg, #fff9f9, #ffffff);
+    border: 2px dashed #ff6b6b;
+    border-radius: 40px;
+    padding: 4rem 2rem;
+}
+
+/* ============================================= */
+/* =====  SHOPPING LIST – MODERN & CLEAN  ===== */
+/* ============================================= */
+
+.shopping-list-view {
+    padding: 1rem;
+}
+
+.shopping-list-view .view-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.shopping-list-view h1 {
+    font-size: 2.2rem;
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+}
+
+.list-stats {
+    display: flex;
+    gap: 1rem;
+}
+
+.list-stats span {
+    background: #f0f0f0;
+    padding: 0.5rem 1.2rem;
+    border-radius: 40px;
+    font-weight: 500;
+    color: #555;
+}
+
+.list-section {
+    background: white;
+    border-radius: 24px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+    border: 1px solid #f0f0f0;
+}
+
+.list-section h2 {
+    font-size: 1.4rem;
+    color: #ff6b6b;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.list-section h2::before {
+    content: '🛒';
+    font-size: 1.2rem;
+}
+
+.list-section.purchased h2::before {
+    content: '✅';
+}
+
+.shopping-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.shopping-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem 0.5rem;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.shopping-item:hover {
+    background: #fff9f9;
+}
+
+.shopping-item input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+    accent-color: #ff6b6b;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.shopping-item .item-name {
+    flex: 1;
+    font-size: 1.1rem;
+    color: #333;
+    transition: color 0.2s;
+}
+
+.shopping-item.checked .item-name {
+    text-decoration: line-through;
+    color: #aaa;
+}
+
+.shopping-item .item-quantity,
+.shopping-item .item-unit {
+    background: #ffe0e0;
+    color: #ff6b6b;
+    padding: 0.2rem 0.8rem;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-left: 0.5rem;
+}
+
+.shopping-item .remove-item {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.3rem 0.6rem;
+    border-radius: 30px;
+    transition: all 0.2s;
+    opacity: 0.5;
+}
+
+.shopping-item .remove-item:hover {
+    opacity: 1;
+    background: #ffe0e0;
+    color: #ff6b6b;
+}
+
+/* List actions */
+.list-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}
+
+.list-actions button {
+    padding: 0.8rem 1.8rem;
+    border: none;
+    border-radius: 40px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#clear-checked-btn {
+    background: white;
+    color: #ff6b6b;
+    border: 2px solid #ff6b6b;
+}
+
+#clear-checked-btn:hover:not(:disabled) {
+    background: #ff6b6b;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(255,107,107,0.2);
+}
+
+#clear-all-btn {
+    background: #ff6b6b;
+    color: white;
+}
+
+#clear-all-btn:hover:not(:disabled) {
+    background: #ff5252;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(255,107,107,0.3);
+}
+
+.list-actions button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Empty state for shopping list */
+.shopping-list-view .empty-state {
+    background: linear-gradient(145deg, #fff9f9, #ffffff);
+    border: 2px dashed #ff6b6b;
+    border-radius: 40px;
+    padding: 4rem 2rem;
+}
+
+/* =========================================== */
+/* =====  MEAL PLANNER – CALENDAR STYLE  ===== */
+/* =========================================== */
+
+.meal-planner-view {
+    padding: 1rem;
+}
+
+.meal-planner-view h1 {
+    font-size: 2.2rem;
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 2rem;
+}
+
+.plan-progress {
+    background: #f9f9f9;
+    border-radius: 30px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 12px;
+    background: #e0e0e0;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff6b6b, #ff8e8e);
+    border-radius: 30px;
+    transition: width 0.5s ease;
+}
+
+.plan-progress p {
+    font-weight: 600;
+    color: #ff6b6b;
+    min-width: 120px;
+}
+
+/* Meal plan grid */
+.meal-plan-grid {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #f0f0f0;
+    border-radius: 24px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+}
+
+.grid-header {
+    display: grid;
+    grid-template-columns: 120px repeat(7, 1fr);
+    background: #fff0f0;
+    border-bottom: 2px solid #ff6b6b;
+}
+
+.grid-header .day-column {
+    padding: 1rem;
+    font-weight: 600;
+    color: #ff6b6b;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.plan-row {
+    display: grid;
+    grid-template-columns: 120px repeat(7, 1fr);
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.plan-row:last-child {
+    border-bottom: none;
+}
+
+.day-column {
+    padding: 1rem;
+    background: #fafafa;
+    font-weight: 600;
+    color: #333;
+    border-right: 1px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.meal-column {
+    padding: 0.8rem;
+    border-right: 1px solid #f0f0f0;
+    min-height: 100px;
+}
+
+.meal-column:last-child {
+    border-right: none;
+}
+
+/* Meal card inside cell */
+.meal-card {
+    background: linear-gradient(145deg, #fff5f5, #ffffff);
+    border-radius: 16px;
+    padding: 0.8rem;
+    box-shadow: 0 2px 8px rgba(255,107,107,0.1);
+    border: 1px solid rgba(255,107,107,0.2);
+    transition: all 0.3s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.meal-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255,107,107,0.2);
+    border-color: #ff6b6b;
+}
+
+.meal-card h4 {
+    font-size: 0.9rem;
+    margin: 0 0 0.3rem 0;
+    color: #333;
+    font-weight: 600;
+    line-height: 1.3;
+    max-height: 2.4rem;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.meal-card .meal-time {
+    font-size: 0.75rem;
+    color: #ff6b6b;
+    font-weight: 500;
+}
+
+.remove-meal-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: rgba(255,107,107,0.1);
+    border: none;
+    color: #ff6b6b;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.meal-card:hover .remove-meal-btn {
+    opacity: 1;
+}
+
+.remove-meal-btn:hover {
+    background: #ff6b6b;
+    color: white;
+}
+
+/* Add meal button */
+.add-meal-btn {
+    width: 100%;
+    height: 100%;
+    min-height: 60px;
+    background: #f9f9f9;
+    border: 2px dashed #ff6b6b;
+    border-radius: 16px;
+    color: #ff6b6b;
+    font-weight: 600;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-meal-btn:hover {
+    background: #fff0f0;
+    border-style: solid;
+    transform: scale(1.02);
+}
+
+/* Quick add suggestions */
+.meal-suggestions {
+    margin-top: 2rem;
+    background: #f9f9f9;
+    border-radius: 30px;
+    padding: 1.5rem;
+}
+
+.meal-suggestions h2 {
+    color: #ff6b6b;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.suggestion-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.suggestion-btn {
+    background: white;
+    border: 2px solid #ff6b6b;
+    color: #ff6b6b;
+    padding: 0.7rem 1.5rem;
+    border-radius: 40px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.suggestion-btn:hover {
+    background: #ff6b6b;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(255,107,107,0.2);
+}
+
+/* Modal for recipe selection */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background: white;
+    border-radius: 40px;
+    padding: 2rem;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    animation: slideUp 0.3s;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.modal-header h2 {
+    color: #ff6b6b;
+    margin: 0;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #999;
+    transition: color 0.2s;
+}
+
+.close-modal:hover {
+    color: #ff6b6b;
+}
+
+/* Day selector in quick add */
+.day-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 0.8rem;
+}
+
+.day-btn {
+    background: white;
+    border: 2px solid #ff6b6b;
+    color: #ff6b6b;
+    padding: 0.8rem;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.day-btn:hover {
+    background: #ff6b6b;
+    color: white;
+}
+
+/* Recipe grid mini (for modal) */
+.recipe-grid-mini {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.recipe-mini-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border: 1px solid #f0f0f0;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.recipe-mini-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(255,107,107,0.1);
+    border-color: #ff6b6b;
+}
+
+.recipe-mini-card img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+}
+
+.recipe-mini-card h4 {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+    margin: 0;
+    color: #333;
+}
+
+.recipe-mini-card .select-recipe-btn {
+    width: 100%;
+    padding: 0.5rem;
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.recipe-mini-card .select-recipe-btn:hover {
+    background: #ff5252;
+}
+
+/* Responsive adjustments for meal planner */
+@media screen and (max-width: 768px) {
+    .grid-header, .plan-row {
+        grid-template-columns: 80px repeat(7, 1fr);
+    }
+    
+    .day-column {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    .meal-card h4 {
+        font-size: 0.8rem;
+    }
+}

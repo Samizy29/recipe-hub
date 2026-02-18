@@ -1,9 +1,10 @@
-import { fetchRecipes } from "./api.js";
+import { fetchRecipes } from './api.js';
 
 export class RecipeSearch {
-    constructor(container) {
+    constructor(container, initialQuery = 'pasta', initialFilters = {}) {
         this.container = container;
-        this.currentQuery = 'pasta';
+        this.currentQuery = initialQuery;
+        this.filters = initialFilters; // Store filters
     }
 
     render() {
@@ -46,34 +47,17 @@ export class RecipeSearch {
     async loadRecipes() {
         const container = this.container.querySelector('#recipes-container');
         container.innerHTML = '<div class="loading">Loading recipes...</div>';
-        
+
         try {
-            const recipes = await fetchRecipes(this.currentQuery);
-            
+            // Pass both query and filters to the API function
+            const recipes = await fetchRecipes(this.currentQuery, this.filters);
+
             if (!recipes || recipes.length === 0) {
                 container.innerHTML = '<div class="empty-state">No recipes found</div>';
                 return;
             }
 
-            container.innerHTML = `
-                <div class="recipes-grid">
-                    ${recipes.map(recipe => `
-                        <div class="recipe-card">
-                            <img src="${recipe.image}" alt="${recipe.title}">
-                            <div class="recipe-info">
-                                <h3>${recipe.title}</h3>
-                                <span class="time">⏱️ ${recipe.readyInMinutes || '30'} mins</span>
-                                <button 
-                                    class="view-recipe-btn" 
-                                    onclick="window.location.hash='#/recipe/${recipe.id}'"
-                                >
-                                    View Recipe
-                                </button>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
+            renderRecipes(recipes, container);
         } catch (error) {
             console.error('Error:', error);
             container.innerHTML = '<div class="error-state">Failed to load recipes</div>';
@@ -81,10 +65,10 @@ export class RecipeSearch {
     }
 }
 
-// For backward compatibility
+// Standalone render function for use elsewhere (e.g., ingredient search)
 export function renderRecipes(recipes, container) {
     if (!container) return;
-    
+
     container.innerHTML = `
         <div class="recipes-grid">
             ${recipes.map(recipe => `

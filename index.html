@@ -3,51 +3,1160 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Recipe Hub</title>
+  <title>Recipe Hub · Smart Kitchen Assistant</title>
+  
+  <!-- Advanced Meta Tags -->
+  <meta name="description" content="Your intelligent recipe manager with meal planning, smart shopping lists, and personalized recommendations" />
+  <meta name="theme-color" content="#2d3e2c" />
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="css/styles.css" />
+  
+  <!-- Additional Advanced Styles (inline for critical path) -->
+  <style>
+    /* Advanced animations and enhancements */
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+    
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 0 0 0 rgba(107, 140, 92, 0.4); }
+      70% { box-shadow: 0 0 0 15px rgba(107, 140, 92, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(107, 140, 92, 0); }
+    }
+    
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .hero-section {
+      animation: slideIn 0.8s ease-out;
+    }
+    
+    .feature-card {
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 40px -10px rgba(45, 62, 44, 0.3);
+    }
+    
+    .floating-icon {
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    .pulse-button {
+      animation: pulse-glow 2s infinite;
+    }
+    
+    .gradient-text {
+      background: linear-gradient(135deg, #2d3e2c, #6b4f3a, #b39b7c);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      background-size: 200% 200%;
+      animation: gradientShift 8s ease infinite;
+    }
+    
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .stats-card {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .typewriter h1 {
+      overflow: hidden;
+      border-right: 0.15em solid #6b8c5c;
+      white-space: nowrap;
+      margin: 0 auto;
+      letter-spacing: 0.15em;
+      animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+    }
+    
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    
+    @keyframes blink-caret {
+      from, to { border-color: transparent; }
+      50% { border-color: #6b8c5c; }
+    }
+  </style>
 </head>
 <body>
+  <!-- Advanced Preloader -->
+  <div id="preloader" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#f9f3e8; z-index:9999; display:flex; align-items:center; justify-content:center; transition:opacity 0.5s;">
+    <div style="text-align:center;">
+      <i class="fas fa-utensils fa-3x" style="color:#2d3e2c; margin-bottom:1rem;"></i>
+      <div style="width:50px; height:50px; border:3px solid #e0d6cc; border-top-color:#2d3e2c; border-radius:50%; animation:spin 1s linear infinite;"></div>
+    </div>
+  </div>
+
   <header>
-    <nav class="main-nav">
+    <nav class="main-nav glass-effect">
       <div class="nav-brand">
-        <h1>RECIPE HUB</h1>
+        <i class="fas fa-utensil-spoon" style="color:#6b8c5c; font-size:1.8rem;"></i>
+        <h1 style="margin-left:0.5rem; font-size:1.8rem;">RECIPE<span style="font-weight:300;">HUB</span></h1>
       </div>
+      
+      <!-- Enhanced Navigation with icons -->
       <ul class="nav-links">
-        <li><a href="#/">Search</a></li>
-        <li><a href="favorites.html">Favorites</a></li>
-        <li><a href="shopping-list.html">Shopping List</a></li>
-        <li><a href="meal-planner.html">Meal Planner</a></li>
+        <li><a href="#/" class="active"><i class="fas fa-search"></i> <span>Search</span></a></li>
+        <li><a href="favorites.html"><i class="fas fa-heart"></i> <span>Favorites</span></a></li>
+        <li><a href="shopping-list.html"><i class="fas fa-shopping-basket"></i> <span>Shopping</span></a></li>
+        <li><a href="meal-planner.html"><i class="fas fa-calendar-alt"></i> <span>Planner</span></a></li>
       </ul>
+      
+      <!-- User Menu (Advanced) -->
+      <div class="user-menu">
+        <button class="user-menu-btn" onclick="toggleUserMenu()">
+          <i class="fas fa-user-circle fa-2x"></i>
+        </button>
+        <div class="user-dropdown" id="userDropdown">
+          <a href="#profile"><i class="fas fa-user"></i> Profile</a>
+          <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+          <a href="#stats"><i class="fas fa-chart-line"></i> Cooking Stats</a>
+          <div class="dropdown-divider"></div>
+          <a href="#signout"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+        </div>
+      </div>
     </nav>
   </header>
 
   <div class="app-container">
-    <aside class="sidebar">
-  <div id="ingredient-form-container"></div>
-  <div id="filters-widget"></div>
-  <div id="timer-widget"></div>
-</aside>
+    <!-- Enhanced Sidebar -->
+    <aside class="sidebar glass-effect">
+      <div class="sidebar-section" id="ingredient-form-container">
+        <h3><i class="fas fa-carrot"></i> What's in your kitchen?</h3>
+        <div class="ingredient-input-group">
+          <input type="text" placeholder="e.g., chicken, tomatoes..." id="ingredientInput">
+          <button class="btn-icon" onclick="addIngredient()"><i class="fas fa-plus"></i></button>
+        </div>
+        <div class="ingredient-tags" id="ingredientTags">
+          <!-- Dynamic tags will appear here -->
+        </div>
+      </div>
+      
+      <div class="sidebar-section" id="filters-widget">
+        <h3><i class="fas fa-sliders-h"></i> Smart Filters</h3>
+        <div class="filter-group">
+          <label><i class="fas fa-clock"></i> Max Time</label>
+          <input type="range" min="5" max="120" value="30" class="time-slider" id="timeFilter">
+          <span id="timeValue">30 min</span>
+        </div>
+        <div class="filter-group">
+          <label><i class="fas fa-fire"></i> Difficulty</label>
+          <div class="difficulty-buttons">
+            <button class="difficulty-btn active">Easy</button>
+            <button class="difficulty-btn">Medium</button>
+            <button class="difficulty-btn">Hard</button>
+          </div>
+        </div>
+        <div class="filter-group">
+          <label><i class="fas fa-leaf"></i> Dietary</label>
+          <div class="dietary-chips">
+            <span class="chip">Vegetarian</span>
+            <span class="chip">Vegan</span>
+            <span class="chip">Gluten-Free</span>
+            <span class="chip">Keto</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="sidebar-section" id="timer-widget">
+        <h3><i class="fas fa-stopwatch"></i> Quick Timer</h3>
+        <div class="timer-display" id="timerDisplay">15:00</div>
+        <div class="timer-controls">
+          <button class="timer-preset" data-minutes="5">5m</button>
+          <button class="timer-preset" data-minutes="10">10m</button>
+          <button class="timer-preset" data-minutes="15">15m</button>
+          <button class="timer-preset" data-minutes="30">30m</button>
+        </div>
+        <button class="btn-primary full-width" id="startTimer">
+          <i class="fas fa-play"></i> Start Timer
+        </button>
+      </div>
+    </aside>
 
-    <main id="app"></main>
+    <!-- Enhanced Main Content -->
+    <main id="app">
+      <!-- Hero Section with Search -->
+      <section class="hero-section">
+        <div class="hero-content">
+          <div class="typewriter">
+            <h1 class="gradient-text">What's cooking today?</h1>
+          </div>
+          <p class="hero-subtitle">Discover 10,000+ recipes tailored to your taste and kitchen</p>
+          
+          <div class="advanced-search">
+            <div class="search-wrapper">
+              <i class="fas fa-search search-icon"></i>
+              <input type="text" placeholder="Search by ingredient, cuisine, or dish..." id="mainSearch">
+              <button class="btn-primary search-btn">
+                <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+            
+            <div class="trending-searches">
+              <span class="trending-label"><i class="fas fa-fire"></i> Trending:</span>
+              <a href="#pasta">Pasta</a>
+              <a href="#chicken">Chicken</a>
+              <a href="#salad">Salad</a>
+              <a href="#soup">Soup</a>
+              <a href="#dessert">Dessert</a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+          <div class="stats-card glass-effect">
+            <i class="fas fa-book-open stats-icon"></i>
+            <div class="stats-info">
+              <span class="stats-number">10,234+</span>
+              <span class="stats-label">Recipes</span>
+            </div>
+          </div>
+          <div class="stats-card glass-effect">
+            <i class="fas fa-users stats-icon"></i>
+            <div class="stats-info">
+              <span class="stats-number">50K+</span>
+              <span class="stats-label">Home Cooks</span>
+            </div>
+          </div>
+          <div class="stats-card glass-effect">
+            <i class="fas fa-clock stats-icon"></i>
+            <div class="stats-info">
+              <span class="stats-number">15min</span>
+              <span class="stats-label">Avg. Prep</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Actions -->
+      <section class="quick-actions">
+        <h2 class="section-title"><i class="fas fa-bolt"></i> Quick Actions</h2>
+        <div class="action-grid">
+          <div class="action-card" onclick="window.location.href='meal-planner.html'">
+            <i class="fas fa-calendar-plus floating-icon"></i>
+            <h3>Plan Your Week</h3>
+            <p>Create a personalized meal plan</p>
+          </div>
+          <div class="action-card" onclick="window.location.href='shopping-list.html'">
+            <i class="fas fa-list floating-icon"></i>
+            <h3>Shopping List</h3>
+            <p>Generate from your meal plan</p>
+          </div>
+          <div class="action-card" onclick="openSurpriseMe()">
+            <i class="fas fa-dice floating-icon"></i>
+            <h3>Surprise Me!</h3>
+            <p>Random recipe generator</p>
+          </div>
+          <div class="action-card" onclick="window.location.href='favorites.html'">
+            <i class="fas fa-heart floating-icon"></i>
+            <h3>Favorites</h3>
+            <p>Your saved recipes</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Featured Recipes Carousel -->
+      <section class="featured-section">
+        <h2 class="section-title"><i class="fas fa-star"></i> Featured Recipes</h2>
+        <div class="carousel-container">
+          <button class="carousel-arrow left" onclick="slideCarousel(-1)"><i class="fas fa-chevron-left"></i></button>
+          <div class="carousel-track" id="featuredCarousel">
+            <!-- Recipe cards will be inserted here dynamically -->
+          </div>
+          <button class="carousel-arrow right" onclick="slideCarousel(1)"><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </section>
+
+      <!-- Categories Grid -->
+      <section class="categories-section">
+        <h2 class="section-title"><i class="fas fa-tags"></i> Explore Categories</h2>
+        <div class="categories-grid">
+          <div class="category-card" data-category="breakfast">
+            <img src="https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=300&h=200&fit=crop" alt="Breakfast">
+            <div class="category-overlay">
+              <h3>Breakfast</h3>
+              <span>245 recipes</span>
+            </div>
+          </div>
+          <div class="category-card" data-category="lunch">
+            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300&h=200&fit=crop" alt="Lunch">
+            <div class="category-overlay">
+              <h3>Lunch</h3>
+              <span>567 recipes</span>
+            </div>
+          </div>
+          <div class="category-card" data-category="dinner">
+            <img src="https://images.unsplash.com/photo-1559847844-5315695dadae?w=300&h=200&fit=crop" alt="Dinner">
+            <div class="category-overlay">
+              <h3>Dinner</h3>
+              <span>892 recipes</span>
+            </div>
+          </div>
+          <div class="category-card" data-category="dessert">
+            <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=300&h=200&fit=crop" alt="Dessert">
+            <div class="category-overlay">
+              <h3>Dessert</h3>
+              <span>423 recipes</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recent Activity -->
+      <section class="activity-section">
+        <h2 class="section-title"><i class="fas fa-history"></i> Recent Activity</h2>
+        <div class="activity-list" id="activityList">
+          <!-- Activity items will be loaded here -->
+        </div>
+      </section>
+    </main>
   </div>
 
-  <footer>
-    <p>&copy; 2026 Recipe Hub</p>
-    <!-- Test Controls - Only visible in development -->
-<div id="test-controls" style="display: none;" class="development-only">
-    <button onclick="window.testRunner?.runAllTests()"> Run Tests</button>
-    <button onclick="StorageTest.testPersistence()"> Test Storage</button>
-    <button onclick="EdgeCaseTester.testAllEdgeCases()"> Test Edge Cases</button>
-</div>
-
-<script>
-    // Show test controls in development
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        document.getElementById('test-controls').style.display = 'block';
-    }
-</script>
+  <!-- Enhanced Footer -->
+  <footer class="advanced-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4><i class="fas fa-utensils"></i> Recipe Hub</h4>
+        <p>Your intelligent kitchen assistant for delicious meals every day.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-pinterest"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#blog">Blog</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#privacy">Privacy Policy</a></li>
+          <li><a href="#terms">Terms of Service</a></li>
+          <li><a href="#cookies">Cookie Policy</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Newsletter</h4>
+        <p>Get weekly recipes and tips</p>
+        <div class="newsletter-form">
+          <input type="email" placeholder="Your email">
+          <button class="btn-primary"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Recipe Hub. All rights reserved. Made with <i class="fas fa-heart" style="color:#ff6b6b;"></i> for food lovers</p>
+    </div>
   </footer>
 
-  <script type="module" src="js/main.js"></script>
+  <!-- Test Controls (Development) -->
+  <div id="test-controls" class="development-only glass-effect">
+    <div class="test-controls-header">
+      <i class="fas fa-flask"></i>
+      <span>Test Lab</span>
+      <button onclick="this.parentElement.parentElement.classList.toggle('collapsed')">
+        <i class="fas fa-chevron-up"></i>
+      </button>
+    </div>
+    <div class="test-controls-content">
+      <button onclick="window.testRunner?.runAllTests()"><i class="fas fa-play"></i> Run Tests</button>
+      <button onclick="StorageTest.testPersistence()"><i class="fas fa-database"></i> Test Storage</button>
+      <button onclick="EdgeCaseTester.testAllEdgeCases()"><i class="fas fa-exclamation-triangle"></i> Test Edge Cases</button>
+    </div>
+  </div>
+
+  <!-- Advanced JavaScript -->
+  <script type="module">
+    // Hide preloader when page loads
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('preloader').style.opacity = '0';
+        setTimeout(() => {
+          document.getElementById('preloader').style.display = 'none';
+        }, 500);
+      }, 800);
+    });
+
+    // User menu toggle
+    window.toggleUserMenu = function() {
+      document.getElementById('userDropdown').classList.toggle('show');
+    };
+
+    // Close dropdown when clicking outside
+    window.addEventListener('click', (e) => {
+      if (!e.target.closest('.user-menu')) {
+        document.getElementById('userDropdown')?.classList.remove('show');
+      }
+    });
+
+    // Timer functionality
+    let timerInterval;
+    let timerSeconds = 900; // 15 minutes default
+    
+    function updateTimerDisplay() {
+      const minutes = Math.floor(timerSeconds / 60);
+      const seconds = timerSeconds % 60;
+      document.getElementById('timerDisplay').textContent = 
+        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+    
+    document.querySelectorAll('.timer-preset').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        timerSeconds = parseInt(e.target.dataset.minutes) * 60;
+        updateTimerDisplay();
+      });
+    });
+    
+    document.getElementById('startTimer').addEventListener('click', () => {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        document.getElementById('startTimer').innerHTML = '<i class="fas fa-play"></i> Start Timer';
+      } else {
+        timerInterval = setInterval(() => {
+          if (timerSeconds > 0) {
+            timerSeconds--;
+            updateTimerDisplay();
+          } else {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            document.getElementById('startTimer').innerHTML = '<i class="fas fa-play"></i> Start Timer';
+            // Play sound or show notification
+            new Notification('Timer Complete!', {
+              body: 'Your food is ready!',
+              icon: 'icon.png'
+            });
+          }
+        }, 1000);
+        document.getElementById('startTimer').innerHTML = '<i class="fas fa-pause"></i> Pause Timer';
+      }
+    });
+
+    // Time filter slider
+    const timeSlider = document.getElementById('timeFilter');
+    const timeValue = document.getElementById('timeValue');
+    timeSlider.addEventListener('input', (e) => {
+      timeValue.textContent = e.target.value + ' min';
+    });
+
+    // Sample featured recipes data
+    const featuredRecipes = [
+      { name: 'Creamy Garlic Pasta', time: '25 min', rating: 4.8, image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&h=300&fit=crop' },
+      { name: 'Grilled Lemon Chicken', time: '35 min', rating: 4.9, image: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=400&h=300&fit=crop' },
+      { name: 'Mediterranean Salad', time: '15 min', rating: 4.7, image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop' },
+      { name: 'Chocolate Lava Cake', time: '20 min', rating: 5.0, image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400&h=300&fit=crop' }
+    ];
+
+    // Populate carousel
+    const carousel = document.getElementById('featuredCarousel');
+    featuredRecipes.forEach(recipe => {
+      const card = document.createElement('div');
+      card.className = 'recipe-card';
+      card.innerHTML = `
+        <img src="${recipe.image}" alt="${recipe.name}">
+        <div class="recipe-info">
+          <h4>${recipe.name}</h4>
+          <div class="recipe-meta">
+            <span><i class="fas fa-clock"></i> ${recipe.time}</span>
+            <span><i class="fas fa-star" style="color:#ffc107;"></i> ${recipe.rating}</span>
+          </div>
+        </div>
+      `;
+      carousel.appendChild(card);
+    });
+
+    // Carousel sliding
+    let currentSlide = 0;
+    window.slideCarousel = (direction) => {
+      const cards = document.querySelectorAll('.recipe-card');
+      const cardWidth = cards[0]?.offsetWidth + 24 || 300;
+      currentSlide = Math.max(0, Math.min(currentSlide + direction, cards.length - 3));
+      carousel.style.transform = `translateX(-${currentSlide * cardWidth}px)`;
+    };
+
+    // Add ingredient tag functionality
+    window.addIngredient = function() {
+      const input = document.getElementById('ingredientInput');
+      const value = input.value.trim();
+      if (value) {
+        const tags = document.getElementById('ingredientTags');
+        const tag = document.createElement('span');
+        tag.className = 'ingredient-tag';
+        tag.innerHTML = `${value} <i class="fas fa-times" onclick="this.parentElement.remove()"></i>`;
+        tags.appendChild(tag);
+        input.value = '';
+      }
+    };
+
+    // Enter key for ingredient input
+    document.getElementById('ingredientInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        addIngredient();
+      }
+    });
+
+    // Surprise Me function
+    window.openSurpriseMe = function() {
+      const recipes = ['Pasta Carbonara', 'Chicken Tikka Masala', 'Vegetable Stir Fry', 'Beef Tacos', 'Mushroom Risotto'];
+      const random = recipes[Math.floor(Math.random() * recipes.length)];
+      alert(`How about trying: ${random}?`);
+      // In production, this would navigate to a random recipe
+    };
+
+    // Recent activity (demo)
+    const activities = [
+      { icon: 'fa-heart', text: 'You liked "Creamy Garlic Pasta"', time: '5 min ago' },
+      { icon: 'fa-shopping-basket', text: 'Shopping list updated', time: '2 hours ago' },
+      { icon: 'fa-calendar-check', text: 'Meal plan for next week created', time: 'yesterday' }
+    ];
+    
+    const activityList = document.getElementById('activityList');
+    activities.forEach(activity => {
+      const item = document.createElement('div');
+      item.className = 'activity-item';
+      item.innerHTML = `
+        <i class="fas ${activity.icon} activity-icon"></i>
+        <div class="activity-details">
+          <p>${activity.text}</p>
+          <small>${activity.time}</small>
+        </div>
+      `;
+      activityList.appendChild(item);
+    });
+
+    // Check for notification permission
+    if ('Notification' in window && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+      Notification.requestPermission();
+    }
+  </script>
+
+  <!-- Additional styles for new elements -->
+  <style>
+    /* Additional styles for enhanced index */
+    .glass-effect {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .user-menu {
+      position: relative;
+      margin-left: 1rem;
+    }
+    
+    .user-menu-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #5f4e3c;
+    }
+    
+    .user-dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      min-width: 200px;
+      z-index: 1000;
+    }
+    
+    .user-dropdown.show {
+      display: block;
+    }
+    
+    .user-dropdown a {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      color: #5f4e3c;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    
+    .user-dropdown a:hover {
+      background: #f5f0ea;
+    }
+    
+    .dropdown-divider {
+      height: 1px;
+      background: #e0d6cc;
+      margin: 0.5rem 0;
+    }
+    
+    .ingredient-input-group {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    
+    .ingredient-input-group input {
+      flex: 1;
+      padding: 0.5rem;
+      border: 1px solid #e0d6cc;
+      border-radius: 8px;
+    }
+    
+    .btn-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      border: none;
+      background: #2d3e2c;
+      color: white;
+      cursor: pointer;
+    }
+    
+    .ingredient-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .ingredient-tag {
+      background: #f0eae4;
+      padding: 0.3rem 0.8rem;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    
+    .ingredient-tag i {
+      cursor: pointer;
+    }
+    
+    .time-slider {
+      width: 100%;
+      margin: 0.5rem 0;
+    }
+    
+    .difficulty-buttons {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    
+    .difficulty-btn {
+      flex: 1;
+      padding: 0.3rem;
+      border: 1px solid #e0d6cc;
+      background: white;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+    
+    .difficulty-btn.active {
+      background: #2d3e2c;
+      color: white;
+      border-color: #2d3e2c;
+    }
+    
+    .dietary-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    
+    .chip {
+      background: white;
+      border: 1px solid #e0d6cc;
+      padding: 0.3rem 0.8rem;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .chip:hover {
+      background: #f0eae4;
+    }
+    
+    .timer-display {
+      font-size: 2.5rem;
+      font-weight: 700;
+      text-align: center;
+      color: #2d3e2c;
+      margin: 1rem 0;
+      font-family: monospace;
+    }
+    
+    .timer-controls {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    
+    .timer-preset {
+      padding: 0.3rem 0.8rem;
+      border: 1px solid #e0d6cc;
+      background: white;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+    
+    .full-width {
+      width: 100%;
+    }
+    
+    .hero-section {
+      padding: 2rem;
+      background: linear-gradient(135deg, rgba(255,243,224,0.8) 0%, rgba(249,243,232,0.8) 100%);
+      border-radius: 32px;
+      margin-bottom: 2rem;
+    }
+    
+    .hero-content {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    
+    .hero-content h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    
+    .hero-subtitle {
+      font-size: 1.2rem;
+      color: #5f4e3c;
+      margin-bottom: 2rem;
+    }
+    
+    .advanced-search {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .search-wrapper {
+      display: flex;
+      align-items: center;
+      background: white;
+      border-radius: 60px;
+      padding: 0.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+    
+    .search-icon {
+      padding: 0 1rem;
+      color: #b39b7c;
+    }
+    
+    .search-wrapper input {
+      flex: 1;
+      border: none;
+      padding: 0.8rem 0;
+      font-size: 1rem;
+    }
+    
+    .search-wrapper input:focus {
+      outline: none;
+    }
+    
+    .search-btn {
+      border-radius: 60px;
+      padding: 0.8rem 1.5rem;
+    }
+    
+    .trending-searches {
+      margin-top: 1rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .trending-label {
+      color: #b39b7c;
+    }
+    
+    .trending-searches a {
+      color: #5f4e3c;
+      text-decoration: none;
+      padding: 0.2rem 1rem;
+      background: rgba(255,255,255,0.5);
+      border-radius: 30px;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .stats-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.5rem;
+      border-radius: 24px;
+    }
+    
+    .stats-icon {
+      font-size: 2rem;
+      color: #2d3e2c;
+    }
+    
+    .stats-info {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .stats-number {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #2d3e2c;
+    }
+    
+    .stats-label {
+      color: #5f4e3c;
+    }
+    
+    .section-title {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #2d3e2c;
+    }
+    
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    
+    .action-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+    }
+    
+    .action-card i {
+      font-size: 2.5rem;
+      color: #6b8c5c;
+      margin-bottom: 1rem;
+    }
+    
+    .action-card h3 {
+      margin-bottom: 0.5rem;
+      color: #2d3e2c;
+    }
+    
+    .action-card p {
+      color: #b39b7c;
+    }
+    
+    .featured-section {
+      margin-bottom: 3rem;
+    }
+    
+    .carousel-container {
+      position: relative;
+      overflow: hidden;
+      padding: 0.5rem;
+    }
+    
+    .carousel-track {
+      display: flex;
+      gap: 1.5rem;
+      transition: transform 0.3s ease;
+    }
+    
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: white;
+      border: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      cursor: pointer;
+      z-index: 10;
+    }
+    
+    .carousel-arrow.left {
+      left: 0;
+    }
+    
+    .carousel-arrow.right {
+      right: 0;
+    }
+    
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    
+    .category-card {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      height: 250px;
+      cursor: pointer;
+    }
+    
+    .category-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+    
+    .category-card:hover img {
+      transform: scale(1.05);
+    }
+    
+    .category-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 2rem 1rem 1rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+      color: white;
+    }
+    
+    .category-overlay h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.2rem;
+    }
+    
+    .activity-section {
+      margin-bottom: 3rem;
+    }
+    
+    .activity-list {
+      background: white;
+      border-radius: 24px;
+      padding: 1rem;
+    }
+    
+    .activity-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      border-bottom: 1px solid #f0eae4;
+    }
+    
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+    
+    .activity-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #f0eae4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6b8c5c;
+    }
+    
+    .activity-details p {
+      margin-bottom: 0.2rem;
+      color: #2d3e2c;
+    }
+    
+    .activity-details small {
+      color: #b39b7c;
+    }
+    
+    .advanced-footer {
+      margin-top: 3rem;
+      background: #2d3e2c;
+      color: white;
+      border-radius: 40px 40px 0 0;
+      padding: 3rem 2rem 1rem;
+    }
+    
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .footer-section h4 {
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .footer-section ul {
+      list-style: none;
+    }
+    
+    .footer-section ul li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .footer-section a {
+      color: #b39b7c;
+      text-decoration: none;
+    }
+    
+    .footer-section a:hover {
+      color: white;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .social-links a {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+    
+    .newsletter-form {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .newsletter-form input {
+      flex: 1;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 8px;
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .development-only {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      z-index: 999;
+      min-width: 200px;
+    }
+    
+    .development-only.collapsed .test-controls-content {
+      display: none;
+    }
+    
+    .test-controls-header {
+      padding: 0.75rem 1rem;
+      background: #2d3e2c;
+      color: white;
+      border-radius: 12px 12px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .test-controls-content {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .test-controls-content button {
+      padding: 0.5rem;
+      border: 1px solid #e0d6cc;
+      background: white;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .test-controls-content button:hover {
+      background: #f0eae4;
+    }
+    
+    @media (max-width: 1024px) {
+      .action-grid,
+      .categories-grid,
+      .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .action-grid,
+      .categories-grid,
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .hero-content h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
 </body>
 </html>

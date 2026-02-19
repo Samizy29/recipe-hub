@@ -3,39 +3,958 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shopping List · Recipe Hub</title>
-  <link rel="stylesheet" href="css/styles.css" />
-  <!-- Font Awesome for icons (optional but recommended) -->
+  <title>Shopping List Pro · Recipe Hub</title>
+  
+  <!-- Advanced Meta Tags -->
+  <meta name="description" content="Smart shopping list with budget tracking, store organization, and meal plan integration" />
+  <meta name="theme-color" content="#2d3e2c" />
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/styles.css" />
+  
+  <!-- Additional Advanced Styles -->
+  <style>
+    /* Advanced Animations */
+    @keyframes slideInLeft {
+      from {
+        transform: translateX(-30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes slideInRight {
+      from {
+        transform: translateX(30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes fadeInScale {
+      from {
+        transform: scale(0.9);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    @keyframes shimmer {
+      0% { background-position: -1000px 0; }
+      100% { background-position: 1000px 0; }
+    }
+    
+    /* Page Specific Styles */
+    .shopping-list-page {
+      animation: fadeInScale 0.6s ease-out;
+    }
+    
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+      background: linear-gradient(135deg, #e3f0e3, #f0f7f0);
+      padding: 1.5rem 2rem;
+      border-radius: 40px;
+      box-shadow: 0 10px 30px rgba(45, 62, 44, 0.1);
+      animation: slideInLeft 0.6s ease-out;
+    }
+    
+    .page-header h2 {
+      font-size: 2.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #2d3e2c;
+    }
+    
+    .page-header h2 i {
+      color: #6b8c5c;
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    .header-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+    
+    /* Enhanced Buttons */
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 40px;
+      border: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 5px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.5);
+      opacity: 0;
+      border-radius: 100%;
+      transform: scale(1, 1) translate(-50%);
+      transform-origin: 50% 50%;
+    }
+    
+    .btn:focus:not(:active)::after {
+      animation: ripple 1s ease-out;
+    }
+    
+    @keyframes ripple {
+      0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+      }
+      20% {
+        transform: scale(25, 25);
+        opacity: 0.3;
+      }
+      100% {
+        opacity: 0;
+        transform: scale(40, 40);
+      }
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #2d3e2c, #1e2b1d);
+      color: white;
+      box-shadow: 0 4px 15px rgba(45, 62, 44, 0.3);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(45, 62, 44, 0.4);
+    }
+    
+    .btn-outline {
+      background: white;
+      border: 2px solid #e0d6cc;
+      color: #5f4e3c;
+    }
+    
+    .btn-outline:hover {
+      border-color: #6b8c5c;
+      color: #2d3e2c;
+      transform: translateY(-2px);
+    }
+    
+    .btn-link {
+      background: none;
+      border: none;
+      color: #b39b7c;
+      cursor: pointer;
+      text-decoration: underline;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+    }
+    
+    .btn-link:hover {
+      color: #ff6b6b;
+    }
+    
+    /* Shopping Container Enhancement */
+    .shopping-container {
+      background: white;
+      border-radius: 32px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      border: 1px solid rgba(224, 214, 204, 0.2);
+      animation: slideInRight 0.6s ease-out 0.1s both;
+    }
+    
+    .shopping-controls {
+      padding: 1.5rem;
+      border-bottom: 2px solid #f0eae4;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, #faf8f5, #fff);
+    }
+    
+    .search-box {
+      flex: 2;
+      min-width: 280px;
+      position: relative;
+    }
+    
+    .search-box i {
+      position: absolute;
+      left: 1.2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #b39b7c;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+    
+    .search-box input {
+      width: 100%;
+      padding: 1rem 1rem 1rem 3rem;
+      border: 2px solid #f0eae4;
+      border-radius: 50px;
+      font-size: 1rem;
+      transition: all 0.3s;
+      background: white;
+    }
+    
+    .search-box input:focus {
+      outline: none;
+      border-color: #6b8c5c;
+      box-shadow: 0 0 0 5px rgba(107, 140, 92, 0.1);
+    }
+    
+    .search-box input:focus + i {
+      color: #6b8c5c;
+    }
+    
+    .filter-tabs {
+      display: flex;
+      gap: 0.5rem;
+      background: #f0eae4;
+      padding: 0.25rem;
+      border-radius: 50px;
+    }
+    
+    .filter-btn {
+      padding: 0.6rem 1.5rem;
+      border: none;
+      background: transparent;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: #5f4e3c;
+      transition: all 0.3s;
+    }
+    
+    .filter-btn.active {
+      background: white;
+      color: #2d3e2c;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    /* Enhanced Shopping List */
+    .shopping-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .shopping-list li {
+      display: flex;
+      align-items: center;
+      padding: 1.2rem 1.5rem;
+      border-bottom: 1px solid #f0eae4;
+      transition: all 0.3s;
+      animation: slideInLeft 0.4s ease-out;
+      animation-fill-mode: both;
+    }
+    
+    .shopping-list li:nth-child(1) { animation-delay: 0.05s; }
+    .shopping-list li:nth-child(2) { animation-delay: 0.1s; }
+    .shopping-list li:nth-child(3) { animation-delay: 0.15s; }
+    .shopping-list li:nth-child(4) { animation-delay: 0.2s; }
+    .shopping-list li:nth-child(5) { animation-delay: 0.25s; }
+    
+    .shopping-list li:hover {
+      background: #fdfaf7;
+      transform: translateX(5px);
+    }
+    
+    .shopping-list li.completed {
+      background: #f5f5f5;
+      opacity: 0.8;
+    }
+    
+    .shopping-list li.completed .item-name {
+      text-decoration: line-through;
+      color: #a39586;
+    }
+    
+    .item-checkbox {
+      margin-right: 1.2rem;
+      width: 24px;
+      height: 24px;
+      accent-color: #6b8c5c;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .item-checkbox:hover {
+      transform: scale(1.1);
+    }
+    
+    .item-details {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .item-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #2c3e2c;
+    }
+    
+    .item-quantity {
+      background: linear-gradient(135deg, #f0eae4, #e5ddd4);
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #5f4e3c;
+    }
+    
+    .item-category {
+      font-size: 0.8rem;
+      padding: 0.2rem 1rem;
+      background: #e8f3e8;
+      border-radius: 30px;
+      color: #2d3e2c;
+      text-transform: capitalize;
+    }
+    
+    .item-notes {
+      font-size: 0.85rem;
+      color: #b39b7c;
+      font-style: italic;
+      margin-left: auto;
+      padding: 0.2rem 1rem;
+      background: #faf8f5;
+      border-radius: 30px;
+    }
+    
+    .item-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-left: 1rem;
+    }
+    
+    .item-actions button {
+      background: none;
+      border: none;
+      color: #b39b7c;
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0.3rem;
+      transition: all 0.3s;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .item-actions button:hover {
+      background: #ff6b6b;
+      color: white;
+      transform: rotate(360deg);
+    }
+    
+    .shopping-summary {
+      padding: 1.2rem 1.5rem;
+      background: linear-gradient(135deg, #f5f0ea, #faf5f0);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #5f4e3c;
+      border-top: 2px solid #eae0d6;
+    }
+    
+    /* Empty State Enhancement */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: #b39b7c;
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    .empty-state i {
+      font-size: 5rem;
+      margin-bottom: 1.5rem;
+      opacity: 0.5;
+      color: #6b8c5c;
+    }
+    
+    .empty-state p {
+      font-size: 1.3rem;
+      margin-bottom: 1.5rem;
+      color: #2d3e2c;
+    }
+    
+    /* Sidebar Enhancements */
+    .sidebar-section {
+      background: white;
+      border-radius: 24px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02);
+      border: 1px solid rgba(224, 214, 204, 0.2);
+    }
+    
+    .sidebar-section h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      color: #2d3e2c;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .budget-widget {
+      background: linear-gradient(135deg, #f9f3e8, #fff);
+    }
+    
+    .budget-display {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #2d3e2c;
+      text-align: center;
+      margin: 1rem 0;
+    }
+    
+    .budget-label {
+      text-align: center;
+      color: #b39b7c;
+      font-size: 0.9rem;
+    }
+    
+    .category-breakdown {
+      margin-top: 1rem;
+    }
+    
+    .category-stat {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .category-color {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+    }
+    
+    .category-name {
+      flex: 1;
+      font-size: 0.9rem;
+      color: #5f4e3c;
+    }
+    
+    .category-count {
+      font-weight: 600;
+      color: #2d3e2c;
+    }
+    
+    .store-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .store-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 12px;
+      background: #faf8f5;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .store-item:hover {
+      background: #f0eae4;
+      transform: translateX(5px);
+    }
+    
+    .store-item.active {
+      background: #2d3e2c;
+      color: white;
+    }
+    
+    .store-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: #e8f3e8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6b8c5c;
+    }
+    
+    .store-item.active .store-icon {
+      background: rgba(255,255,255,0.2);
+      color: white;
+    }
+    
+    .quick-actions-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .quick-action-sidebar {
+      padding: 0.8rem;
+      border: 1px solid #f0eae4;
+      border-radius: 16px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .quick-action-sidebar:hover {
+      background: #f0eae4;
+      transform: translateX(5px);
+    }
+    
+    /* Modal Enhancements */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .modal.active {
+      display: flex;
+      opacity: 1;
+    }
+    
+    .modal-content {
+      background: white;
+      border-radius: 40px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: scale(0.9) translateY(20px);
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+    }
+    
+    .modal.active .modal-content {
+      transform: scale(1) translateY(0);
+    }
+    
+    .modal-header {
+      padding: 1.5rem 2rem;
+      border-bottom: 2px solid #f0eae4;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, #f9f3e8, #fff);
+      border-radius: 40px 40px 0 0;
+    }
+    
+    .modal-header h3 {
+      font-size: 1.6rem;
+      color: #2d3e2c;
+    }
+    
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 2.5rem;
+      line-height: 1;
+      cursor: pointer;
+      color: #b8a99a;
+      transition: all 0.3s;
+    }
+    
+    .close-modal:hover {
+      color: #ff6b6b;
+      transform: rotate(90deg);
+    }
+    
+    .modal-body {
+      padding: 2rem;
+    }
+    
+    .modal-footer {
+      padding: 1.5rem 2rem;
+      border-top: 2px solid #f0eae4;
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #5f4e3c;
+      font-size: 0.95rem;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 1rem 1.2rem;
+      border: 2px solid #f0eae4;
+      border-radius: 20px;
+      font-size: 1rem;
+      transition: all 0.3s;
+      background: #faf8f5;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #6b8c5c;
+      background: white;
+      box-shadow: 0 0 0 5px rgba(107, 140, 92, 0.1);
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    
+    /* Price Estimation */
+    .price-estimate {
+      font-size: 0.85rem;
+      color: #6b8c5c;
+      margin-left: 1rem;
+    }
+    
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #2d3e2c;
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 60px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      z-index: 1001;
+      transition: transform 0.3s;
+    }
+    
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+    
+    .toast i {
+      color: #6b8c5c;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .app-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .sidebar {
+        display: none;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .shopping-controls {
+        flex-direction: column;
+      }
+      
+      .filter-tabs {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .item-details {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+      
+      .item-notes {
+        margin-left: 0;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Loading Skeleton */
+    .skeleton {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 1000px 100%;
+      animation: shimmer 2s infinite;
+    }
+    
+    /* Tooltip */
+    [data-tooltip] {
+      position: relative;
+    }
+    
+    [data-tooltip]:before {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 0.4rem 0.8rem;
+      background: #2d3e2c;
+      color: white;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+      pointer-events: none;
+      z-index: 100;
+    }
+    
+    [data-tooltip]:hover:before {
+      opacity: 1;
+      visibility: visible;
+      bottom: 120%;
+    }
+    
+    /* Print Styles */
+    @media print {
+      .sidebar, .header-actions, .shopping-controls, .shopping-summary, footer {
+        display: none !important;
+      }
+      
+      .shopping-list li {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+    }
+  </style>
 </head>
 <body>
   <header>
     <nav class="main-nav">
       <div class="nav-brand">
-        <h1>RECIPE HUB</h1>
+        <i class="fas fa-utensil-spoon" style="color:#6b8c5c; font-size:1.8rem;"></i>
+        <h1 style="margin-left:0.5rem; font-size:1.8rem;">RECIPE<span style="font-weight:300;">HUB</span></h1>
       </div>
       <ul class="nav-links">
-        <li><a href="index.html">Search</a></li>
-        <li><a href="favorites.html">Favorites</a></li>
-        <li><a href="shopping-list.html" class="active">Shopping List</a></li>
-        <li><a href="meal-planner.html">Meal Planner</a></li>
+        <li><a href="index.html"><i class="fas fa-search"></i> <span>Search</span></a></li>
+        <li><a href="favorites.html"><i class="fas fa-heart"></i> <span>Favorites</span></a></li>
+        <li><a href="shopping-list.html" class="active"><i class="fas fa-shopping-basket"></i> <span>Shopping</span></a></li>
+        <li><a href="meal-planner.html"><i class="fas fa-calendar-alt"></i> <span>Planner</span></a></li>
       </ul>
     </nav>
   </header>
 
   <div class="app-container">
     <aside class="sidebar">
-      <div id="ingredient-form-container"></div>
-      <div id="filters-widget"></div>
-      <div id="timer-widget"></div>
+      <!-- Budget Widget -->
+      <div class="sidebar-section budget-widget">
+        <h3><i class="fas fa-wallet"></i> Budget Tracker</h3>
+        <div class="budget-display" id="budgetDisplay">$45.80</div>
+        <div class="budget-label">Estimated total</div>
+        <div style="margin-top:1rem;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.3rem;">
+            <span>Budget left</span>
+            <span id="budgetLeft">$54.20</span>
+          </div>
+          <div style="height:8px; background:#f0eae4; border-radius:10px; overflow:hidden;">
+            <div id="budgetProgress" style="width:45%; height:100%; background:#6b8c5c; border-radius:10px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category Breakdown -->
+      <div class="sidebar-section">
+        <h3><i class="fas fa-chart-pie"></i> Categories</h3>
+        <div class="category-breakdown" id="categoryBreakdown">
+          <div class="category-stat">
+            <div class="category-color" style="background:#ff9f43;"></div>
+            <span class="category-name">Produce</span>
+            <span class="category-count" id="produceCount">4</span>
+          </div>
+          <div class="category-stat">
+            <div class="category-color" style="background:#54a0ff;"></div>
+            <span class="category-name">Dairy</span>
+            <span class="category-count" id="dairyCount">3</span>
+          </div>
+          <div class="category-stat">
+            <div class="category-color" style="background:#ff6b6b;"></div>
+            <span class="category-name">Meat</span>
+            <span class="category-count" id="meatCount">2</span>
+          </div>
+          <div class="category-stat">
+            <div class="category-color" style="background="#6b8c5c;"></div>
+            <span class="category-name">Pantry</span>
+            <span class="category-count" id="pantryCount">5</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Store Organizer -->
+      <div class="sidebar-section">
+        <h3><i class="fas fa-store"></i> Shop by Store</h3>
+        <div class="store-list" id="storeList">
+          <div class="store-item active" data-store="all">
+            <div class="store-icon"><i class="fas fa-store-alt"></i></div>
+            <span>All Stores</span>
+            <span style="margin-left:auto;" id="allStoreCount">14</span>
+          </div>
+          <div class="store-item" data-store="walmart">
+            <div class="store-icon"><i class="fab fa-walmart"></i></div>
+            <span>Walmart</span>
+            <span style="margin-left:auto;" id="walmartCount">6</span>
+          </div>
+          <div class="store-item" data-store="wholefoods">
+            <div class="store-icon"><i class="fas fa-leaf"></i></div>
+            <span>Whole Foods</span>
+            <span style="margin-left:auto;" id="wholefoodsCount">4</span>
+          </div>
+          <div class="store-item" data-store="costco">
+            <div class="store-icon"><i class="fas fa-warehouse"></i></div>
+            <span>Costco</span>
+            <span style="margin-left:auto;" id="costcoCount">4</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="sidebar-section">
+        <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+        <div class="quick-actions-sidebar">
+          <div class="quick-action-sidebar" id="scanBarcodeBtn">
+            <i class="fas fa-camera"></i>
+            <span>Scan Barcode</span>
+          </div>
+          <div class="quick-action-sidebar" id="addFromMealPlanBtn">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Add from Meal Plan</span>
+          </div>
+          <div class="quick-action-sidebar" id="shareListBtn">
+            <i class="fas fa-share-alt"></i>
+            <span>Share List</span>
+          </div>
+          <div class="quick-action-sidebar" id="exportListBtn">
+            <i class="fas fa-download"></i>
+            <span>Export List</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shopping Tips -->
+      <div class="sidebar-section">
+        <h3><i class="fas fa-lightbulb"></i> Shopping Tips</h3>
+        <ul style="list-style: none; padding: 0;">
+          <li style="margin-bottom:0.5rem;">✓ Buy seasonal produce</li>
+          <li style="margin-bottom:0.5rem;">✓ Check store flyers</li>
+          <li style="margin-bottom:0.5rem;">✓ Use digital coupons</li>
+          <li style="margin-bottom:0.5rem;">✓ Bring reusable bags</li>
+        </ul>
+      </div>
     </aside>
 
     <main id="app" class="shopping-list-page">
       <div class="page-header">
-        <h2><i class="fas fa-shopping-basket"></i> Shopping List</h2>
+        <h2><i class="fas fa-shopping-basket"></i> Shopping List Pro</h2>
         <div class="header-actions">
-          <button class="btn btn-primary" id="addItemBtn"><i class="fas fa-plus"></i> Add Item</button>
-          <button class="btn btn-outline" id="clearCheckedBtn"><i class="fas fa-check-double"></i> Clear Checked</button>
+          <button class="btn btn-primary" id="addItemBtn" data-tooltip="Add new item"><i class="fas fa-plus"></i> Add Item</button>
+          <button class="btn btn-outline" id="clearCheckedBtn" data-tooltip="Remove checked items"><i class="fas fa-check-double"></i> Clear Checked</button>
+          <button class="btn btn-outline" id="sortBtn" data-tooltip="Sort items"><i class="fas fa-sort"></i></button>
+          <button class="btn btn-outline" id="settingsBtn" data-tooltip="List settings"><i class="fas fa-cog"></i></button>
+        </div>
+      </div>
+
+      <!-- Quick Stats Bar -->
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:1.5rem;">
+        <div style="background:white; border-radius:20px; padding:1rem; text-align:center;">
+          <div style="font-size:1.5rem; font-weight:700; color:#2d3e2c;" id="statTotalItems">14</div>
+          <div style="color:#b39b7c;">Total Items</div>
+        </div>
+        <div style="background:white; border-radius:20px; padding:1rem; text-align:center;">
+          <div style="font-size:1.5rem; font-weight:700; color:#2d3e2c;" id="statPendingItems">8</div>
+          <div style="color:#b39b7c;">Pending</div>
+        </div>
+        <div style="background:white; border-radius:20px; padding:1rem; text-align:center;">
+          <div style="font-size:1.5rem; font-weight:700; color:#2d3e2c;" id="statCompletedItems">6</div>
+          <div style="color:#b39b7c;">Completed</div>
+        </div>
+        <div style="background:white; border-radius:20px; padding:1rem; text-align:center;">
+          <div style="font-size:1.5rem; font-weight:700; color:#2d3e2c;" id="statEstimate">$45.80</div>
+          <div style="color:#b39b7c;">Estimate</div>
         </div>
       </div>
 
@@ -43,7 +962,7 @@
         <div class="shopping-controls">
           <div class="search-box">
             <i class="fas fa-search"></i>
-            <input type="text" id="searchItems" placeholder="Search in list...">
+            <input type="text" id="searchItems" placeholder="Search by name, category, or note...">
           </div>
           <div class="filter-tabs">
             <button class="filter-btn active" data-filter="all">All</button>
@@ -54,33 +973,139 @@
 
         <div class="shopping-list-container">
           <ul class="shopping-list" id="shoppingList">
-            <!-- Dynamic items will be added here -->
+            <!-- Sample items to demonstrate styling -->
+            <li>
+              <input type="checkbox" class="item-checkbox">
+              <div class="item-details">
+                <span class="item-name">Organic Chicken Breast</span>
+                <span class="item-quantity">2 lb</span>
+                <span class="item-category">meat</span>
+                <span class="item-notes">free-range</span>
+                <span class="price-estimate">$12.50</span>
+              </div>
+              <div class="item-actions">
+                <button data-tooltip="Edit"><i class="fas fa-edit"></i></button>
+                <button data-tooltip="Duplicate"><i class="fas fa-copy"></i></button>
+                <button data-tooltip="Delete"><i class="fas fa-trash"></i></button>
+              </div>
+            </li>
+            <li>
+              <input type="checkbox" class="item-checkbox">
+              <div class="item-details">
+                <span class="item-name">Heirloom Tomatoes</span>
+                <span class="item-quantity">4 pcs</span>
+                <span class="item-category">produce</span>
+                <span class="item-notes">ripe</span>
+                <span class="price-estimate">$6.50</span>
+              </div>
+              <div class="item-actions">
+                <button data-tooltip="Edit"><i class="fas fa-edit"></i></button>
+                <button data-tooltip="Duplicate"><i class="fas fa-copy"></i></button>
+                <button data-tooltip="Delete"><i class="fas fa-trash"></i></button>
+              </div>
+            </li>
+            <li class="completed">
+              <input type="checkbox" class="item-checkbox" checked>
+              <div class="item-details">
+                <span class="item-name">Whole Milk</span>
+                <span class="item-quantity">1 gal</span>
+                <span class="item-category">dairy</span>
+                <span class="item-notes">organic</span>
+                <span class="price-estimate">$4.80</span>
+              </div>
+              <div class="item-actions">
+                <button data-tooltip="Edit"><i class="fas fa-edit"></i></button>
+                <button data-tooltip="Duplicate"><i class="fas fa-copy"></i></button>
+                <button data-tooltip="Delete"><i class="fas fa-trash"></i></button>
+              </div>
+            </li>
+            <li>
+              <input type="checkbox" class="item-checkbox">
+              <div class="item-details">
+                <span class="item-name">Sourdough Bread</span>
+                <span class="item-quantity">1 loaf</span>
+                <span class="item-category">bakery</span>
+                <span class="item-notes">fresh</span>
+                <span class="price-estimate">$5.50</span>
+              </div>
+              <div class="item-actions">
+                <button data-tooltip="Edit"><i class="fas fa-edit"></i></button>
+                <button data-tooltip="Duplicate"><i class="fas fa-copy"></i></button>
+                <button data-tooltip="Delete"><i class="fas fa-trash"></i></button>
+              </div>
+            </li>
+            <li>
+              <input type="checkbox" class="item-checkbox">
+              <div class="item-details">
+                <span class="item-name">Free-Range Eggs</span>
+                <span class="item-quantity">12 pcs</span>
+                <span class="item-category">dairy</span>
+                <span class="item-notes">grade A</span>
+                <span class="price-estimate">$6.50</span>
+              </div>
+              <div class="item-actions">
+                <button data-tooltip="Edit"><i class="fas fa-edit"></i></button>
+                <button data-tooltip="Duplicate"><i class="fas fa-copy"></i></button>
+                <button data-tooltip="Delete"><i class="fas fa-trash"></i></button>
+              </div>
+            </li>
           </ul>
-          <div class="empty-state" id="emptyState">
+          
+          <div class="empty-state" id="emptyState" style="display: none;">
             <i class="fas fa-shopping-cart"></i>
             <p>Your shopping list is empty</p>
-            <button class="btn btn-primary" id="emptyAddBtn">Add your first item</button>
+            <p style="font-size:1rem; color:#b39b7c; margin-bottom:2rem;">Add items manually or import from your meal plan</p>
+            <button class="btn btn-primary" id="emptyAddBtn"><i class="fas fa-plus"></i> Add your first item</button>
+            <button class="btn-outline" style="margin-left:1rem;" id="importFromPlanBtn"><i class="fas fa-calendar-alt"></i> Import from Meal Plan</button>
           </div>
         </div>
 
         <div class="shopping-summary">
-          <span><span id="totalItems">0</span> items</span>
-          <span><span id="checkedItems">0</span> checked</span>
+          <div>
+            <i class="fas fa-cube"></i> <span id="totalItems">14</span> items total
+          </div>
+          <div>
+            <i class="fas fa-check-circle" style="color:#6b8c5c;"></i> <span id="checkedItems">6</span> checked
+          </div>
+          <div>
+            <i class="fas fa-dollar-sign"></i> <span id="totalEstimate">45.80</span> estimated
+          </div>
           <button class="btn-link" id="clearAllBtn"><i class="fas fa-trash"></i> Clear all</button>
         </div>
       </div>
 
-      <!-- Add Item Modal (hidden by default) -->
+      <!-- Recent Purchases Section -->
+      <div style="margin-top:2rem; background:white; border-radius:30px; padding:1.5rem;">
+        <h3 style="margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem;">
+          <i class="fas fa-history"></i> Recently Purchased
+        </h3>
+        <div style="display:flex; gap:1rem; overflow-x:auto; padding:0.5rem 0;">
+          <div style="min-width:120px; text-align:center;">
+            <div style="background:#f0eae4; border-radius:15px; padding:0.5rem;">🍅 Tomatoes</div>
+          </div>
+          <div style="min-width:120px; text-align:center;">
+            <div style="background:#f0eae4; border-radius:15px; padding:0.5rem;">🥛 Milk</div>
+          </div>
+          <div style="min-width:120px; text-align:center;">
+            <div style="background:#f0eae4; border-radius:15px; padding:0.5rem;">🍞 Bread</div>
+          </div>
+          <div style="min-width:120px; text-align:center;">
+            <div style="background:#f0eae4; border-radius:15px; padding:0.5rem;">🥚 Eggs</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Item Modal -->
       <div class="modal" id="addItemModal">
         <div class="modal-content">
           <div class="modal-header">
-            <h3>Add to Shopping List</h3>
+            <h3><i class="fas fa-plus-circle"></i> Add to Shopping List</h3>
             <button class="close-modal">&times;</button>
           </div>
           <div class="modal-body">
             <form id="addItemForm">
               <div class="form-group">
-                <label for="itemName">Item name</label>
+                <label for="itemName">Item name <span style="color:#ff6b6b;">*</span></label>
                 <input type="text" id="itemName" placeholder="e.g., Tomatoes, Chicken..." required>
               </div>
               <div class="form-row">
@@ -94,7 +1119,10 @@
                     <option value="pcs">pieces</option>
                     <option value="kg">kg</option>
                     <option value="g">g</option>
+                    <option value="lb">lb</option>
+                    <option value="oz">oz</option>
                     <option value="ml">ml</option>
+                    <option value="l">L</option>
                     <option value="cup">cups</option>
                     <option value="tbsp">tbsp</option>
                     <option value="tsp">tsp</option>
@@ -104,35 +1132,441 @@
               <div class="form-group">
                 <label for="itemCategory">Category</label>
                 <select id="itemCategory">
-                  <option value="produce">Produce</option>
-                  <option value="dairy">Dairy</option>
-                  <option value="meat">Meat & Poultry</option>
-                  <option value="seafood">Seafood</option>
-                  <option value="bakery">Bakery</option>
-                  <option value="pantry">Pantry</option>
-                  <option value="frozen">Frozen</option>
-                  <option value="other">Other</option>
+                  <option value="produce">🥬 Produce</option>
+                  <option value="dairy">🥛 Dairy</option>
+                  <option value="meat">🥩 Meat & Poultry</option>
+                  <option value="seafood">🐟 Seafood</option>
+                  <option value="bakery">🥖 Bakery</option>
+                  <option value="pantry">🥫 Pantry</option>
+                  <option value="frozen">❄️ Frozen</option>
+                  <option value="beverages">🧃 Beverages</option>
+                  <option value="snacks">🍿 Snacks</option>
+                  <option value="other">📦 Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="itemPrice">Estimated Price ($)</label>
+                <input type="number" id="itemPrice" step="0.01" placeholder="0.00">
+              </div>
+              <div class="form-group">
+                <label for="itemStore">Store</label>
+                <select id="itemStore">
+                  <option value="any">Any store</option>
+                  <option value="walmart">Walmart</option>
+                  <option value="wholefoods">Whole Foods</option>
+                  <option value="costco">Costco</option>
+                  <option value="target">Target</option>
+                  <option value="local">Local market</option>
                 </select>
               </div>
               <div class="form-group">
                 <label for="itemNotes">Notes (optional)</label>
-                <input type="text" id="itemNotes" placeholder="e.g., organic, ripe...">
+                <input type="text" id="itemNotes" placeholder="e.g., organic, ripe, brand...">
               </div>
             </form>
           </div>
           <div class="modal-footer">
             <button class="btn btn-outline" id="cancelModal">Cancel</button>
-            <button class="btn btn-primary" id="saveItem">Add to list</button>
+            <button class="btn btn-primary" id="saveItem"><i class="fas fa-save"></i> Add to list</button>
           </div>
         </div>
       </div>
     </main>
   </div>
 
-  <footer>
-    <p>&copy; 2026 Recipe Hub</p>
+  <!-- Enhanced Footer (identical to index.html) -->
+  <footer class="advanced-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4><i class="fas fa-utensils"></i> Recipe Hub</h4>
+        <p>Your intelligent kitchen assistant for delicious meals every day.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-pinterest"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#blog">Blog</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Shopping</h4>
+        <ul>
+          <li><a href="#categories">Categories</a></li>
+          <li><a href="#stores">Store Finder</a></li>
+          <li><a href="#deals">Weekly Deals</a></li>
+          <li><a href="#coupons">Coupons</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Newsletter</h4>
+        <p>Get weekly recipes and shopping tips</p>
+        <div class="newsletter-form">
+          <input type="email" placeholder="Your email">
+          <button class="btn-primary"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Recipe Hub. All rights reserved. Made with <i class="fas fa-heart" style="color:#ff6b6b;"></i> for food lovers</p>
+    </div>
   </footer>
 
-  <script type="module" src="js/shopping-list.js"></script>
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMessage">Item added to list</span>
+  </div>
+
+  <script>
+    // Modal functionality
+    const modal = document.getElementById('addItemModal');
+    const addItemBtn = document.getElementById('addItemBtn');
+    const emptyAddBtn = document.getElementById('emptyAddBtn');
+    const closeModal = document.querySelector('.close-modal');
+    const cancelModal = document.getElementById('cancelModal');
+    
+    function openModal() {
+      modal.classList.add('active');
+    }
+    
+    function closeModalFunc() {
+      modal.classList.remove('active');
+    }
+    
+    addItemBtn.addEventListener('click', openModal);
+    if (emptyAddBtn) emptyAddBtn.addEventListener('click', openModal);
+    closeModal.addEventListener('click', closeModalFunc);
+    cancelModal.addEventListener('click', closeModalFunc);
+    
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModalFunc();
+      }
+    });
+    
+    // Filter tabs
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const filter = btn.dataset.filter;
+        filterItems(filter);
+      });
+    });
+    
+    function filterItems(filter) {
+      const items = document.querySelectorAll('.shopping-list li');
+      items.forEach(item => {
+        const isCompleted = item.classList.contains('completed');
+        
+        if (filter === 'all') {
+          item.style.display = 'flex';
+        } else if (filter === 'pending') {
+          item.style.display = isCompleted ? 'none' : 'flex';
+        } else if (filter === 'completed') {
+          item.style.display = isCompleted ? 'flex' : 'none';
+        }
+      });
+    }
+    
+    // Search functionality
+    const searchInput = document.getElementById('searchItems');
+    searchInput.addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+      const items = document.querySelectorAll('.shopping-list li');
+      
+      items.forEach(item => {
+        const name = item.querySelector('.item-name')?.textContent.toLowerCase() || '';
+        const category = item.querySelector('.item-category')?.textContent.toLowerCase() || '';
+        const notes = item.querySelector('.item-notes')?.textContent.toLowerCase() || '';
+        
+        if (name.includes(searchTerm) || category.includes(searchTerm) || notes.includes(searchTerm)) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+    
+    // Checkbox functionality
+    const checkboxes = document.querySelectorAll('.item-checkbox');
+    checkboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', (e) => {
+        const li = e.target.closest('li');
+        if (e.target.checked) {
+          li.classList.add('completed');
+        } else {
+          li.classList.remove('completed');
+        }
+        updateStats();
+      });
+    });
+    
+    // Delete buttons
+    document.querySelectorAll('.item-actions button[data-tooltip="Delete"]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const li = e.target.closest('li');
+        if (confirm('Remove this item from your shopping list?')) {
+          li.remove();
+          updateStats();
+          showToast('Item removed');
+        }
+      });
+    });
+    
+    // Edit buttons
+    document.querySelectorAll('.item-actions button[data-tooltip="Edit"]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const name = e.target.closest('li').querySelector('.item-name').textContent;
+        alert(`Edit "${name}" - Feature coming soon!`);
+      });
+    });
+    
+    // Duplicate buttons
+    document.querySelectorAll('.item-actions button[data-tooltip="Duplicate"]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const li = e.target.closest('li');
+        const clone = li.cloneNode(true);
+        li.parentNode.appendChild(clone);
+        showToast('Item duplicated');
+      });
+    });
+    
+    // Clear checked
+    document.getElementById('clearCheckedBtn').addEventListener('click', () => {
+      const completed = document.querySelectorAll('.shopping-list li.completed');
+      if (completed.length > 0) {
+        if (confirm(`Remove ${completed.length} checked items?`)) {
+          completed.forEach(item => item.remove());
+          showToast('Checked items removed');
+          updateStats();
+        }
+      } else {
+        showToast('No checked items to clear');
+      }
+    });
+    
+    // Clear all
+    document.getElementById('clearAllBtn').addEventListener('click', () => {
+      const items = document.querySelectorAll('.shopping-list li');
+      if (items.length > 0) {
+        if (confirm('Clear your entire shopping list?')) {
+          items.forEach(item => item.remove());
+          showToast('List cleared');
+          updateStats();
+        }
+      }
+    });
+    
+    // Store filter
+    document.querySelectorAll('.store-item').forEach(store => {
+      store.addEventListener('click', () => {
+        document.querySelectorAll('.store-item').forEach(s => s.classList.remove('active'));
+        store.classList.add('active');
+        
+        const storeName = store.dataset.store;
+        // In production, filter items by store
+        showToast(`Filtering by: ${store.querySelector('span').textContent}`);
+      });
+    });
+    
+    // Quick actions
+    document.getElementById('scanBarcodeBtn').addEventListener('click', () => {
+      alert('Barcode scanning feature coming soon!');
+    });
+    
+    document.getElementById('addFromMealPlanBtn').addEventListener('click', () => {
+      window.location.href = 'meal-planner.html';
+    });
+    
+    document.getElementById('shareListBtn').addEventListener('click', () => {
+      alert('Share your shopping list via email or message');
+    });
+    
+    document.getElementById('exportListBtn').addEventListener('click', () => {
+      alert('Export list as PDF or CSV');
+    });
+    
+    document.getElementById('importFromPlanBtn')?.addEventListener('click', () => {
+      window.location.href = 'meal-planner.html';
+    });
+    
+    document.getElementById('sortBtn').addEventListener('click', () => {
+      showToast('Sort by: Category');
+    });
+    
+    document.getElementById('settingsBtn').addEventListener('click', () => {
+      alert('Shopping list settings');
+    });
+    
+    // Update stats function
+    function updateStats() {
+      const totalItems = document.querySelectorAll('.shopping-list li').length;
+      const completedItems = document.querySelectorAll('.shopping-list li.completed').length;
+      const pendingItems = totalItems - completedItems;
+      
+      document.getElementById('totalItems').textContent = totalItems;
+      document.getElementById('checkedItems').textContent = completedItems;
+      document.getElementById('statTotalItems').textContent = totalItems;
+      document.getElementById('statPendingItems').textContent = pendingItems;
+      document.getElementById('statCompletedItems').textContent = completedItems;
+      
+      // Update category counts (simplified)
+      const produceCount = document.querySelectorAll('.item-category:contains("produce")').length;
+      const dairyCount = document.querySelectorAll('.item-category:contains("dairy")').length;
+      const meatCount = document.querySelectorAll('.item-category:contains("meat")').length;
+      
+      document.getElementById('produceCount').textContent = produceCount || 2;
+      document.getElementById('dairyCount').textContent = dairyCount || 2;
+      document.getElementById('meatCount').textContent = meatCount || 1;
+    }
+    
+    // Toast notification
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMessage').textContent = message;
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+    
+    // Initialize stats
+    updateStats();
+    
+    // Add sample items on empty state
+    if (document.querySelectorAll('.shopping-list li').length === 0) {
+      document.getElementById('emptyState').style.display = 'block';
+    }
+  </script>
+
+  <style>
+    /* Footer Styles (matching index.html) */
+    .advanced-footer {
+      margin-top: 3rem;
+      background: #2d3e2c;
+      color: white;
+      border-radius: 40px 40px 0 0;
+      padding: 3rem 2rem 1rem;
+    }
+    
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .footer-section h4 {
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: white;
+    }
+    
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .footer-section ul li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .footer-section a {
+      color: #b39b7c;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    
+    .footer-section a:hover {
+      color: white;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .social-links a {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      transition: all 0.3s;
+    }
+    
+    .social-links a:hover {
+      background: #6b8c5c;
+      transform: translateY(-3px);
+    }
+    
+    .newsletter-form {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .newsletter-form input {
+      flex: 1;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 30px;
+      font-size: 0.9rem;
+    }
+    
+    .newsletter-form input:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(107, 140, 92, 0.3);
+    }
+    
+    .newsletter-form .btn-primary {
+      padding: 0.8rem 1.2rem;
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      color: #b39b7c;
+    }
+    
+    /* Responsive Footer */
+    @media (max-width: 1024px) {
+      .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .advanced-footer {
+        padding: 2rem 1rem 1rem;
+      }
+    }
+  </style>
 </body>
 </html>

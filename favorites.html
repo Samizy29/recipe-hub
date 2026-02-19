@@ -3,46 +3,935 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Favorites · Recipe Hub</title>
-  <link rel="stylesheet" href="css/styles.css" />
+  <title>My Favorites · Recipe Hub</title>
+  
+  <!-- Advanced Meta Tags -->
+  <meta name="description" content="Your collection of favorite recipes - manage, organize, and cook your most-loved meals" />
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/styles.css" />
+  
+  <!-- Additional Advanced Styles -->
+  <style>
+    /* Advanced Animations */
+    @keyframes heartBeat {
+      0% { transform: scale(1); }
+      14% { transform: scale(1.3); }
+      28% { transform: scale(1); }
+      42% { transform: scale(1.3); }
+      70% { transform: scale(1); }
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes shimmer {
+      0% { background-position: -1000px 0; }
+      100% { background-position: 1000px 0; }
+    }
+    
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+      100% { transform: translateY(0px); }
+    }
+    
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Favorites Page Specific Styles */
+    .favorites-page {
+      animation: fadeInUp 0.6s ease-out;
+    }
+    
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+      background: linear-gradient(135deg, #fff8f0, #fff);
+      padding: 1.5rem 2rem;
+      border-radius: 40px;
+      box-shadow: 0 10px 30px rgba(255, 107, 107, 0.1);
+    }
+    
+    .page-header h2 {
+      font-size: 2.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #2d3e2c;
+    }
+    
+    .page-header h2 i {
+      animation: heartBeat 1.5s ease-in-out infinite;
+    }
+    
+    .header-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+    
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 40px;
+      border: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+    
+    .btn:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #2d3e2c, #1e2b1d);
+      color: white;
+      box-shadow: 0 4px 15px rgba(45, 62, 44, 0.3);
+    }
+    
+    .btn-outline {
+      background: white;
+      border: 2px solid #e0d6cc;
+      color: #5f4e3c;
+    }
+    
+    .btn-outline:hover {
+      border-color: #ff6b6b;
+      color: #ff6b6b;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(255, 107, 107, 0.2);
+    }
+    
+    /* Enhanced Controls Section */
+    .favorites-controls {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 30px;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.03);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: center;
+      border: 1px solid rgba(224, 214, 204, 0.3);
+    }
+    
+    .search-box {
+      flex: 2;
+      min-width: 280px;
+      position: relative;
+    }
+    
+    .search-box i {
+      position: absolute;
+      left: 1.2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #b39b7c;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+    
+    .search-box input {
+      width: 100%;
+      padding: 1rem 1rem 1rem 3rem;
+      border: 2px solid #f0eae4;
+      border-radius: 50px;
+      font-size: 1rem;
+      transition: all 0.3s;
+      background: #faf8f5;
+    }
+    
+    .search-box input:focus {
+      outline: none;
+      border-color: #ff6b6b;
+      background: white;
+      box-shadow: 0 0 0 5px rgba(255, 107, 107, 0.1);
+    }
+    
+    .search-box input:focus + i {
+      color: #ff6b6b;
+    }
+    
+    .view-options {
+      display: flex;
+      gap: 0.5rem;
+      background: #f5f0ea;
+      padding: 0.25rem;
+      border-radius: 50px;
+    }
+    
+    .view-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      background: transparent;
+      color: #5f4e3c;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .view-btn.active {
+      background: white;
+      color: #ff6b6b;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    .category-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      flex: 3;
+    }
+    
+    .category-chip {
+      padding: 0.6rem 1.2rem;
+      background: white;
+      border: 2px solid #f0eae4;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: #5f4e3c;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .category-chip::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 107, 107, 0.1);
+      transform: translate(-50%, -50%);
+      transition: width 0.4s, height 0.4s;
+    }
+    
+    .category-chip:hover::before {
+      width: 200px;
+      height: 200px;
+    }
+    
+    .category-chip:hover {
+      border-color: #ff6b6b;
+      transform: translateY(-2px);
+    }
+    
+    .category-chip.active {
+      background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+      border-color: #ff6b6b;
+      color: white;
+      box-shadow: 0 6px 15px rgba(255, 107, 107, 0.3);
+    }
+    
+    /* Enhanced Grid Layout */
+    .favorites-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.8rem;
+      margin-top: 1.5rem;
+      transition: all 0.3s;
+    }
+    
+    .favorites-grid.list-view {
+      grid-template-columns: 1fr;
+    }
+    
+    /* Enhanced Recipe Card */
+    .recipe-card {
+      background: white;
+      border-radius: 30px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      cursor: pointer;
+      position: relative;
+      animation: fadeInUp 0.6s ease-out;
+      animation-fill-mode: both;
+      border: 1px solid rgba(224, 214, 204, 0.2);
+    }
+    
+    .recipe-card:nth-child(1) { animation-delay: 0.1s; }
+    .recipe-card:nth-child(2) { animation-delay: 0.2s; }
+    .recipe-card:nth-child(3) { animation-delay: 0.3s; }
+    .recipe-card:nth-child(4) { animation-delay: 0.4s; }
+    .recipe-card:nth-child(5) { animation-delay: 0.5s; }
+    .recipe-card:nth-child(6) { animation-delay: 0.6s; }
+    
+    .recipe-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 25px 50px -12px rgba(255, 107, 107, 0.25);
+    }
+    
+    .recipe-card-image {
+      height: 200px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      transition: all 0.5s;
+    }
+    
+    .recipe-card:hover .recipe-card-image {
+      transform: scale(1.05);
+    }
+    
+    .recipe-card-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(5px);
+      padding: 0.5rem 1rem;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #ff6b6b;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      z-index: 2;
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    .recipe-card-content {
+      padding: 1.5rem;
+      position: relative;
+    }
+    
+    .recipe-card-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #2c3e2c;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .favorite-heart {
+      color: #ff6b6b;
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      animation: heartBeat 1.5s ease-in-out;
+    }
+    
+    .favorite-heart:hover {
+      transform: scale(1.2);
+      filter: drop-shadow(0 4px 10px rgba(255, 107, 107, 0.5));
+    }
+    
+    .recipe-card-category {
+      display: inline-block;
+      padding: 0.3rem 1rem;
+      background: #f0eae4;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      color: #5f4e3c;
+      margin-bottom: 1rem;
+      text-transform: capitalize;
+    }
+    
+    .recipe-card-meta {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+      padding: 0.75rem 0;
+      border-top: 1px dashed #f0eae4;
+      border-bottom: 1px dashed #f0eae4;
+    }
+    
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.9rem;
+      color: #6b5f53;
+    }
+    
+    .meta-item i {
+      color: #b39b7c;
+    }
+    
+    .recipe-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+    }
+    
+    .recipe-card-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .action-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: #f5f0ea;
+      color: #5f4e3c;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .action-btn:hover {
+      background: #ff6b6b;
+      color: white;
+      transform: rotate(360deg);
+    }
+    
+    .action-btn.plan-btn:hover {
+      background: #2d3e2c;
+      transform: scale(1.1);
+    }
+    
+    /* List View Styles */
+    .list-view .recipe-card {
+      display: flex;
+      height: 180px;
+    }
+    
+    .list-view .recipe-card-image {
+      width: 180px;
+      height: 100%;
+    }
+    
+    .list-view .recipe-card-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    /* Collection Section */
+    .collections-section {
+      margin-bottom: 2rem;
+    }
+    
+    .collections-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .collections-header h3 {
+      font-size: 1.3rem;
+      color: #2d3e2c;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .collections-grid {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      padding: 0.5rem 0 1rem;
+      scrollbar-width: thin;
+      scrollbar-color: #ff6b6b #f0eae4;
+    }
+    
+    .collections-grid::-webkit-scrollbar {
+      height: 6px;
+    }
+    
+    .collections-grid::-webkit-scrollbar-track {
+      background: #f0eae4;
+      border-radius: 10px;
+    }
+    
+    .collections-grid::-webkit-scrollbar-thumb {
+      background: #ff6b6b;
+      border-radius: 10px;
+    }
+    
+    .collection-card {
+      min-width: 150px;
+      background: linear-gradient(135deg, #fff5f5, #fff);
+      border: 2px solid #ffe0e0;
+      border-radius: 20px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .collection-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, transparent, rgba(255, 107, 107, 0.1), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
+    }
+    
+    .collection-card:hover::before {
+      transform: translateX(100%);
+    }
+    
+    .collection-card:hover {
+      transform: translateY(-5px);
+      border-color: #ff6b6b;
+      box-shadow: 0 10px 25px rgba(255, 107, 107, 0.2);
+    }
+    
+    .collection-card.active {
+      background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+      border-color: #ff6b6b;
+      color: white;
+    }
+    
+    .collection-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .collection-name {
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+    
+    .collection-count {
+      font-size: 0.8rem;
+      color: #b39b7c;
+    }
+    
+    .collection-card.active .collection-count {
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    /* Empty State Enhancement */
+    .empty-state {
+      text-align: center;
+      padding: 5rem 2rem;
+      background: white;
+      border-radius: 40px;
+      margin-top: 2rem;
+      border: 2px dashed #f0eae4;
+    }
+    
+    .empty-state i {
+      font-size: 5rem;
+      color: #ff6b6b;
+      margin-bottom: 1.5rem;
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    .empty-state p {
+      font-size: 1.4rem;
+      color: #2d3e2c;
+      margin-bottom: 1.5rem;
+    }
+    
+    .empty-state .btn {
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+    }
+    
+    /* Stats Cards */
+    .favorites-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+      background: white;
+      padding: 1.2rem;
+      border-radius: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.02);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      border: 1px solid #f0eae4;
+    }
+    
+    .stat-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #fff0f0, #fff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: #ff6b6b;
+    }
+    
+    .stat-info h4 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #2d3e2c;
+      line-height: 1.2;
+    }
+    
+    .stat-info p {
+      color: #b39b7c;
+      font-size: 0.9rem;
+    }
+    
+    /* Quick Actions */
+    .quick-actions {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    
+    .quick-action-btn {
+      padding: 0.8rem 1.5rem;
+      background: white;
+      border: 2px solid #f0eae4;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .quick-action-btn:hover {
+      border-color: #ff6b6b;
+      background: #fff5f5;
+      transform: translateY(-2px);
+    }
+    
+    /* Modal Enhancements */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .modal.active {
+      display: flex;
+      opacity: 1;
+    }
+    
+    .modal-content {
+      background: white;
+      border-radius: 40px;
+      width: 90%;
+      max-width: 500px;
+      transform: scale(0.9);
+      transition: transform 0.3s;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+    }
+    
+    .modal.active .modal-content {
+      transform: scale(1);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .favorites-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .favorites-controls {
+        flex-direction: column;
+      }
+      
+      .category-filters {
+        justify-content: center;
+      }
+      
+      .favorites-stats {
+        grid-template-columns: 1fr;
+      }
+      
+      .list-view .recipe-card {
+        flex-direction: column;
+        height: auto;
+      }
+      
+      .list-view .recipe-card-image {
+        width: 100%;
+        height: 200px;
+      }
+    }
+    
+    /* Loading Skeleton */
+    .skeleton {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 1000px 100%;
+      animation: shimmer 2s infinite;
+    }
+    
+    /* Tooltip */
+    [data-tooltip] {
+      position: relative;
+    }
+    
+    [data-tooltip]:before {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 0.4rem 0.8rem;
+      background: #2d3e2c;
+      color: white;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+      pointer-events: none;
+    }
+    
+    [data-tooltip]:hover:before {
+      opacity: 1;
+      visibility: visible;
+      bottom: 120%;
+    }
+  </style>
 </head>
 <body>
   <header>
     <nav class="main-nav">
       <div class="nav-brand">
-        <h1>RECIPE HUB</h1>
+        <i class="fas fa-utensil-spoon" style="color:#6b8c5c;"></i>
+        <h1>RECIPE<span style="font-weight:300;">HUB</span></h1>
       </div>
       <ul class="nav-links">
-        <li><a href="index.html">Search</a></li>
-        <li><a href="favorites.html" class="active">Favorites</a></li>
-        <li><a href="shopping-list.html">Shopping List</a></li>
-        <li><a href="meal-planner.html">Meal Planner</a></li>
+        <li><a href="index.html"><i class="fas fa-search"></i> <span>Search</span></a></li>
+        <li><a href="favorites.html" class="active"><i class="fas fa-heart"></i> <span>Favorites</span></a></li>
+        <li><a href="shopping-list.html"><i class="fas fa-shopping-basket"></i> <span>Shopping</span></a></li>
+        <li><a href="meal-planner.html"><i class="fas fa-calendar-alt"></i> <span>Planner</span></a></li>
       </ul>
     </nav>
   </header>
 
   <div class="app-container">
     <aside class="sidebar">
-      <div id="ingredient-form-container"></div>
-      <div id="filters-widget"></div>
-      <div id="timer-widget"></div>
+      <!-- Quick Stats Sidebar Widget -->
+      <div class="sidebar-section stats-widget">
+        <h3><i class="fas fa-chart-pie"></i> Your Favorites</h3>
+        <div class="stats-list">
+          <div class="stat-item">
+            <span class="stat-label">Total Recipes</span>
+            <span class="stat-value" id="totalFavorites">24</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Categories</span>
+            <span class="stat-value" id="totalCategories">6</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Cooked</span>
+            <span class="stat-value" id="cookedCount">12</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">To Try</span>
+            <span class="stat-value" id="toTryCount">12</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="sidebar-section">
+        <h3><i class="fas fa-layer-group"></i> Collections</h3>
+        <div class="collections-list" id="collectionsList">
+          <!-- Dynamic collections will be added -->
+        </div>
+      </div>
+      
+      <div class="sidebar-section">
+        <h3><i class="fas fa-filter"></i> Quick Filters</h3>
+        <div class="quick-filters">
+          <label class="filter-checkbox">
+            <input type="checkbox" checked> <span>Show all</span>
+          </label>
+          <label class="filter-checkbox">
+            <input type="checkbox"> <span>Cooked this week</span>
+          </label>
+          <label class="filter-checkbox">
+            <input type="checkbox"> <span>Quick meals (≤30min)</span>
+          </label>
+          <label class="filter-checkbox">
+            <input type="checkbox"> <span>Healthy options</span>
+          </label>
+        </div>
+      </div>
+      
+      <div class="sidebar-section">
+        <h3><i class="fas fa-tags"></i> Most Used Tags</h3>
+        <div class="tag-cloud">
+          <span class="tag" style="font-size:1.4rem;">#easy</span>
+          <span class="tag" style="font-size:1.2rem;">#dinner</span>
+          <span class="tag" style="font-size:1.6rem;">#healthy</span>
+          <span class="tag" style="font-size:1rem;">#vegetarian</span>
+          <span class="tag" style="font-size:1.3rem;">#quick</span>
+          <span class="tag" style="font-size:1.1rem;">#pasta</span>
+          <span class="tag" style="font-size:1.5rem;">#chicken</span>
+          <span class="tag" style="font-size:1.2rem;">#dessert</span>
+        </div>
+      </div>
     </aside>
 
     <main id="app" class="favorites-page">
-      <div class="page-header">
-        <h2><i class="fas fa-heart" style="color: #ff6b6b;"></i> My Favorite Recipes</h2>
-        <div class="header-actions">
-          <button class="btn btn-outline" id="sortFavorites"><i class="fas fa-sort"></i> Sort</button>
-          <button class="btn btn-outline" id="exportFavorites"><i class="fas fa-download"></i> Export</button>
+      <!-- Stats Overview -->
+      <div class="favorites-stats">
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fas fa-heart"></i></div>
+          <div class="stat-info">
+            <h4>24</h4>
+            <p>Total favorites</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fas fa-clock"></i></div>
+          <div class="stat-info">
+            <h4>32min</h4>
+            <p>Avg. cook time</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fas fa-fire"></i></div>
+          <div class="stat-info">
+            <h4>8</h4>
+            <p>Cooked this month</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fas fa-star"></i></div>
+          <div class="stat-info">
+            <h4>4.8</h4>
+            <p>Avg. rating</p>
+          </div>
         </div>
       </div>
 
+      <!-- Collections Carousel -->
+      <div class="collections-section">
+        <div class="collections-header">
+          <h3><i class="fas fa-folder"></i> Your Collections</h3>
+          <button class="btn-outline" id="newCollectionBtn"><i class="fas fa-plus"></i> New Collection</button>
+        </div>
+        <div class="collections-grid" id="collectionsGrid">
+          <div class="collection-card active">
+            <div class="collection-icon"><i class="fas fa-heart"></i></div>
+            <div class="collection-name">All Favorites</div>
+            <div class="collection-count">24 recipes</div>
+          </div>
+          <div class="collection-card">
+            <div class="collection-icon"><i class="fas fa-mug-hot"></i></div>
+            <div class="collection-name">Breakfast</div>
+            <div class="collection-count">8 recipes</div>
+          </div>
+          <div class="collection-card">
+            <div class="collection-icon"><i class="fas fa-utensils"></i></div>
+            <div class="collection-name">Quick Dinners</div>
+            <div class="collection-count">12 recipes</div>
+          </div>
+          <div class="collection-card">
+            <div class="collection-icon"><i class="fas fa-cake"></i></div>
+            <div class="collection-name">Desserts</div>
+            <div class="collection-count">6 recipes</div>
+          </div>
+          <div class="collection-card">
+            <div class="collection-icon"><i class="fas fa-leaf"></i></div>
+            <div class="collection-name">Vegetarian</div>
+            <div class="collection-count">10 recipes</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <button class="quick-action-btn" id="selectAllBtn"><i class="fas fa-check-square"></i> Select All</button>
+        <button class="quick-action-btn" id="shareSelectedBtn"><i class="fas fa-share-alt"></i> Share Selected</button>
+        <button class="quick-action-btn" id="addToPlanBtn"><i class="fas fa-calendar-plus"></i> Add to Meal Plan</button>
+        <button class="quick-action-btn" id="printBtn"><i class="fas fa-print"></i> Print</button>
+      </div>
+
+      <!-- Main Controls -->
       <div class="favorites-controls">
         <div class="search-box">
           <i class="fas fa-search"></i>
-          <input type="text" id="searchFavorites" placeholder="Search favorites...">
+          <input type="text" id="searchFavorites" placeholder="Search by name, ingredient, or tag...">
         </div>
+        
+        <div class="view-options">
+          <button class="view-btn active" data-view="grid" id="gridViewBtn" data-tooltip="Grid view"><i class="fas fa-th-large"></i></button>
+          <button class="view-btn" data-view="list" id="listViewBtn" data-tooltip="List view"><i class="fas fa-list"></i></button>
+          <button class="view-btn" data-view="compact" id="compactViewBtn" data-tooltip="Compact view"><i class="fas fa-th"></i></button>
+        </div>
+
         <div class="category-filters">
           <button class="category-chip active" data-category="all">All</button>
           <button class="category-chip" data-category="breakfast">Breakfast</button>
@@ -50,25 +939,669 @@
           <button class="category-chip" data-category="dinner">Dinner</button>
           <button class="category-chip" data-category="dessert">Dessert</button>
           <button class="category-chip" data-category="vegetarian">Vegetarian</button>
+          <button class="category-chip" data-category="quick">Quick (<30min)</button>
         </div>
       </div>
 
-      <div class="favorites-grid" id="favoritesGrid">
-        <!-- Favorite recipe cards will be inserted here -->
+      <!-- Sort Bar -->
+      <div class="sort-bar">
+        <span>Sort by:</span>
+        <button class="sort-option active" data-sort="recent">Recently Added <i class="fas fa-chevron-down"></i></button>
+        <button class="sort-option" data-sort="name">Name <i class="fas fa-chevron-down"></i></button>
+        <button class="sort-option" data-sort="rating">Rating <i class="fas fa-chevron-down"></i></button>
+        <button class="sort-option" data-sort="cookTime">Cook Time <i class="fas fa-chevron-down"></i></button>
       </div>
 
+      <!-- Favorites Grid -->
+      <div class="favorites-grid" id="favoritesGrid">
+        <!-- Recipe Card 1 -->
+        <div class="recipe-card" data-category="dinner" data-rating="4.9" data-time="25">
+          <div class="recipe-card-image" style="background-image: url('https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&h=300&fit=crop');">
+            <span class="recipe-card-badge"><i class="fas fa-clock"></i> 25 min</span>
+          </div>
+          <div class="recipe-card-content">
+            <div class="recipe-card-title">
+              Creamy Garlic Pasta
+              <i class="fas fa-heart favorite-heart"></i>
+            </div>
+            <span class="recipe-card-category">Italian • Dinner</span>
+            <div class="recipe-card-meta">
+              <span class="meta-item"><i class="fas fa-fire"></i> 450 cal</span>
+              <span class="meta-item"><i class="fas fa-star" style="color:#ffc107;"></i> 4.9</span>
+              <span class="meta-item"><i class="fas fa-users"></i> 4 servings</span>
+            </div>
+            <div class="recipe-card-footer">
+              <div class="recipe-card-actions">
+                <button class="action-btn" data-tooltip="View recipe"><i class="fas fa-eye"></i></button>
+                <button class="action-btn plan-btn" data-tooltip="Add to meal plan"><i class="fas fa-calendar-plus"></i></button>
+                <button class="action-btn" data-tooltip="Add to shopping list"><i class="fas fa-shopping-basket"></i></button>
+                <button class="action-btn" data-tooltip="Share"><i class="fas fa-share-alt"></i></button>
+              </div>
+              <span class="cooked-badge"><i class="fas fa-check-circle" style="color:#6b8c5c;"></i> Cooked 3x</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recipe Card 2 -->
+        <div class="recipe-card" data-category="breakfast" data-rating="4.8" data-time="15">
+          <div class="recipe-card-image" style="background-image: url('https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=400&h=300&fit=crop');">
+            <span class="recipe-card-badge"><i class="fas fa-clock"></i> 15 min</span>
+          </div>
+          <div class="recipe-card-content">
+            <div class="recipe-card-title">
+              Fluffy Pancakes
+              <i class="fas fa-heart favorite-heart"></i>
+            </div>
+            <span class="recipe-card-category">Breakfast • American</span>
+            <div class="recipe-card-meta">
+              <span class="meta-item"><i class="fas fa-fire"></i> 320 cal</span>
+              <span class="meta-item"><i class="fas fa-star" style="color:#ffc107;"></i> 4.8</span>
+              <span class="meta-item"><i class="fas fa-users"></i> 2 servings</span>
+            </div>
+            <div class="recipe-card-footer">
+              <div class="recipe-card-actions">
+                <button class="action-btn" data-tooltip="View recipe"><i class="fas fa-eye"></i></button>
+                <button class="action-btn plan-btn" data-tooltip="Add to meal plan"><i class="fas fa-calendar-plus"></i></button>
+                <button class="action-btn" data-tooltip="Add to shopping list"><i class="fas fa-shopping-basket"></i></button>
+                <button class="action-btn" data-tooltip="Share"><i class="fas fa-share-alt"></i></button>
+              </div>
+              <span class="cooked-badge"><i class="fas fa-check-circle" style="color:#6b8c5c;"></i> Cooked 5x</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recipe Card 3 -->
+        <div class="recipe-card" data-category="dinner" data-rating="4.7" data-time="35">
+          <div class="recipe-card-image" style="background-image: url('https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=400&h=300&fit=crop');">
+            <span class="recipe-card-badge"><i class="fas fa-clock"></i> 35 min</span>
+          </div>
+          <div class="recipe-card-content">
+            <div class="recipe-card-title">
+              Grilled Lemon Chicken
+              <i class="fas fa-heart favorite-heart"></i>
+            </div>
+            <span class="recipe-card-category">Dinner • Mediterranean</span>
+            <div class="recipe-card-meta">
+              <span class="meta-item"><i class="fas fa-fire"></i> 380 cal</span>
+              <span class="meta-item"><i class="fas fa-star" style="color:#ffc107;"></i> 4.7</span>
+              <span class="meta-item"><i class="fas fa-users"></i> 4 servings</span>
+            </div>
+            <div class="recipe-card-footer">
+              <div class="recipe-card-actions">
+                <button class="action-btn" data-tooltip="View recipe"><i class="fas fa-eye"></i></button>
+                <button class="action-btn plan-btn" data-tooltip="Add to meal plan"><i class="fas fa-calendar-plus"></i></button>
+                <button class="action-btn" data-tooltip="Add to shopping list"><i class="fas fa-shopping-basket"></i></button>
+                <button class="action-btn" data-tooltip="Share"><i class="fas fa-share-alt"></i></button>
+              </div>
+              <span class="cooked-badge"><i class="fas fa-check-circle" style="color:#6b8c5c;"></i> Cooked 2x</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recipe Card 4 -->
+        <div class="recipe-card" data-category="dessert" data-rating="5.0" data-time="20">
+          <div class="recipe-card-image" style="background-image: url('https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400&h=300&fit=crop');">
+            <span class="recipe-card-badge"><i class="fas fa-clock"></i> 20 min</span>
+          </div>
+          <div class="recipe-card-content">
+            <div class="recipe-card-title">
+              Chocolate Lava Cake
+              <i class="fas fa-heart favorite-heart"></i>
+            </div>
+            <span class="recipe-card-category">Dessert • French</span>
+            <div class="recipe-card-meta">
+              <span class="meta-item"><i class="fas fa-fire"></i> 520 cal</span>
+              <span class="meta-item"><i class="fas fa-star" style="color:#ffc107;"></i> 5.0</span>
+              <span class="meta-item"><i class="fas fa-users"></i> 2 servings</span>
+            </div>
+            <div class="recipe-card-footer">
+              <div class="recipe-card-actions">
+                <button class="action-btn" data-tooltip="View recipe"><i class="fas fa-eye"></i></button>
+                <button class="action-btn plan-btn" data-tooltip="Add to meal plan"><i class="fas fa-calendar-plus"></i></button>
+                <button class="action-btn" data-tooltip="Add to shopping list"><i class="fas fa-shopping-basket"></i></button>
+                <button class="action-btn" data-tooltip="Share"><i class="fas fa-share-alt"></i></button>
+              </div>
+              <span class="cooked-badge"><i class="fas fa-check-circle" style="color:#6b8c5c;"></i> Cooked 1x</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recipe Card 5 -->
+        <div class="recipe-card" data-category="vegetarian" data-rating="4.8" data-time="15">
+          <div class="recipe-card-image" style="background-image: url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop');">
+            <span class="recipe-card-badge"><i class="fas fa-clock"></i> 15 min</span>
+          </div>
+          <div class="recipe-card-content">
+            <div class="recipe-card-title">
+              Mediterranean Salad
+              <i class="fas fa-heart favorite-heart"></i>
+            </div>
+            <span class="recipe-card-category">Vegetarian • Salad</span>
+            <div class="recipe-card-meta">
+              <span class="meta-item"><i class="fas fa-fire"></i> 220 cal</span>
+              <span class="meta-item"><i class="fas fa-star" style="color:#ffc107;"></i> 4.8</span>
+              <span class="meta-item"><i class="fas fa-users"></i> 2 servings</span>
+            </div>
+            <div class="recipe-card-footer">
+              <div class="recipe-card-actions">
+                <button class="action-btn" data-tooltip="View recipe"><i class="fas fa-eye"></i></button>
+                <button class="action-btn plan-btn" data-tooltip="Add to meal plan"><i class="fas fa-calendar-plus"></i></button>
+                <button class="action-btn" data-tooltip="Add to shopping list"><i class="fas fa-shopping-basket"></i></button>
+                <button class="action-btn" data-tooltip="Share"><i class="fas fa-share-alt"></i></button>
+              </div>
+              <span class="cooked-badge"><i class="fas fa-check-circle" style="color:#6b8c5c;"></i> Cooked 4x</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recipe Card 6 -->
+        <div class="recipe-card" data-category="dinner" data-rating="4.6" data-time="45">
+          <div class="recipe-card-image" style="background-image: url('https://images.unsplash.com/photo-1559847844-5315695dadae?w=400&h=300&fit=crop');">
+            <span class="recipe-card-badge"><i class="fas fa-clock"></i> 45 min</span>
+          </div>
+          <div class="recipe-card-content">
+            <div class="recipe-card-title">
+              Beef Wellington
+              <i class="fas fa-heart favorite-heart"></i>
+            </div>
+            <span class="recipe-card-category">Dinner • British</span>
+            <div class="recipe-card-meta">
+              <span class="meta-item"><i class="fas fa-fire"></i> 850 cal</span>
+              <span class="meta-item"><i class="fas fa-star" style="color:#ffc107;"></i> 4.6</span>
+              <span class="meta-item"><i class="fas fa-users"></i> 6 servings</span>
+            </div>
+            <div class="recipe-card-footer">
+              <div class="recipe-card-actions">
+                <button class="action-btn" data-tooltip="View recipe"><i class="fas fa-eye"></i></button>
+                <button class="action-btn plan-btn" data-tooltip="Add to meal plan"><i class="fas fa-calendar-plus"></i></button>
+                <button class="action-btn" data-tooltip="Add to shopping list"><i class="fas fa-shopping-basket"></i></button>
+                <button class="action-btn" data-tooltip="Share"><i class="fas fa-share-alt"></i></button>
+              </div>
+              <span class="cooked-badge"><i class="fas fa-check-circle" style="color:#6b8c5c;"></i> Cooked 1x</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State (Hidden by default) -->
       <div class="empty-state" id="emptyFavorites" style="display: none;">
         <i class="far fa-heart"></i>
-        <p>You haven't added any favorites yet</p>
-        <a href="index.html" class="btn btn-primary">Browse Recipes</a>
+        <p>Your favorites collection is empty</p>
+        <p style="font-size:1rem; color:#b39b7c; margin-bottom:2rem;">Start adding recipes you love to see them here</p>
+        <a href="index.html" class="btn btn-primary"><i class="fas fa-search"></i> Browse Recipes</a>
+        <button class="btn-outline" style="margin-left:1rem;" id="importBtn"><i class="fas fa-upload"></i> Import</button>
+      </div>
+
+      <!-- Load More -->
+      <div style="text-align: center; margin: 3rem 0;">
+        <button class="btn-outline" id="loadMoreBtn"><i class="fas fa-spinner"></i> Load More</button>
       </div>
     </main>
   </div>
 
+  <!-- New Collection Modal -->
+  <div class="modal" id="newCollectionModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-folder-plus"></i> Create New Collection</h3>
+        <button class="close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="newCollectionForm">
+          <div class="form-group">
+            <label>Collection Name</label>
+            <input type="text" placeholder="e.g., Family Favorites, Weekend Meals..." required>
+          </div>
+          <div class="form-group">
+            <label>Choose Icon</label>
+            <div class="icon-picker">
+              <button class="icon-option active"><i class="fas fa-heart"></i></button>
+              <button class="icon-option"><i class="fas fa-star"></i></button>
+              <button class="icon-option"><i class="fas fa-fire"></i></button>
+              <button class="icon-option"><i class="fas fa-leaf"></i></button>
+              <button class="icon-option"><i class="fas fa-mug-hot"></i></button>
+              <button class="icon-option"><i class="fas fa-cake"></i></button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description (optional)</label>
+            <textarea rows="3" placeholder="What's special about this collection?"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-outline" id="cancelModal">Cancel</button>
+        <button class="btn-primary" id="createCollection">Create Collection</button>
+      </div>
+    </div>
+  </div>
+
   <footer>
-    <p>&copy; 2026 Recipe Hub</p>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4><i class="fas fa-heart" style="color:#ff6b6b;"></i> Recipe Hub</h4>
+        <p>Your personal recipe collection, beautifully organized.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#import">Import Recipes</a></li>
+          <li><a href="#export">Export Collection</a></li>
+          <li><a href="#share">Share Favorites</a></li>
+          <li><a href="#feedback">Feedback</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Stats</h4>
+        <ul>
+          <li><i class="fas fa-heart"></i> 24 favorites</li>
+          <li><i class="fas fa-clock"></i> 32min avg.</li>
+          <li><i class="fas fa-utensils"></i> 8 cooked</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Recipe Hub. Made with <i class="fas fa-heart" style="color:#ff6b6b;"></i> for food lovers</p>
+    </div>
   </footer>
 
-  <script type="module" src="js/favorites.js"></script>
+  <script type="module">
+    // View toggle functionality
+    const gridViewBtn = document.getElementById('gridViewBtn');
+    const listViewBtn = document.getElementById('listViewBtn');
+    const compactViewBtn = document.getElementById('compactViewBtn');
+    const favoritesGrid = document.getElementById('favoritesGrid');
+    
+    gridViewBtn.addEventListener('click', () => {
+      favoritesGrid.className = 'favorites-grid';
+      gridViewBtn.classList.add('active');
+      listViewBtn.classList.remove('active');
+      compactViewBtn.classList.remove('active');
+    });
+    
+    listViewBtn.addEventListener('click', () => {
+      favoritesGrid.className = 'favorites-grid list-view';
+      listViewBtn.classList.add('active');
+      gridViewBtn.classList.remove('active');
+      compactViewBtn.classList.remove('active');
+    });
+    
+    compactViewBtn.addEventListener('click', () => {
+      favoritesGrid.className = 'favorites-grid compact-view';
+      compactViewBtn.classList.add('active');
+      gridViewBtn.classList.remove('active');
+      listViewBtn.classList.remove('active');
+    });
+    
+    // Category filter functionality
+    const categoryChips = document.querySelectorAll('.category-chip');
+    categoryChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        categoryChips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        
+        const category = chip.dataset.category;
+        filterRecipes(category);
+      });
+    });
+    
+    function filterRecipes(category) {
+      const recipes = document.querySelectorAll('.recipe-card');
+      recipes.forEach(recipe => {
+        if (category === 'all' || recipe.dataset.category === category) {
+          recipe.style.display = 'block';
+        } else {
+          recipe.style.display = 'none';
+        }
+      });
+    }
+    
+    // Search functionality
+    const searchInput = document.getElementById('searchFavorites');
+    searchInput.addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+      const recipes = document.querySelectorAll('.recipe-card');
+      
+      recipes.forEach(recipe => {
+        const title = recipe.querySelector('.recipe-card-title').textContent.toLowerCase();
+        const category = recipe.querySelector('.recipe-card-category').textContent.toLowerCase();
+        
+        if (title.includes(searchTerm) || category.includes(searchTerm)) {
+          recipe.style.display = 'block';
+        } else {
+          recipe.style.display = 'none';
+        }
+      });
+    });
+    
+    // Sort functionality
+    const sortOptions = document.querySelectorAll('.sort-option');
+    sortOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        sortOptions.forEach(o => o.classList.remove('active'));
+        option.classList.add('active');
+        
+        const sortBy = option.dataset.sort;
+        sortRecipes(sortBy);
+      });
+    });
+    
+    function sortRecipes(sortBy) {
+      const grid = document.getElementById('favoritesGrid');
+      const recipes = Array.from(document.querySelectorAll('.recipe-card'));
+      
+      recipes.sort((a, b) => {
+        switch(sortBy) {
+          case 'name':
+            const nameA = a.querySelector('.recipe-card-title').textContent;
+            const nameB = b.querySelector('.recipe-card-title').textContent;
+            return nameA.localeCompare(nameB);
+          case 'rating':
+            const ratingA = parseFloat(a.dataset.rating);
+            const ratingB = parseFloat(b.dataset.rating);
+            return ratingB - ratingA;
+          case 'cookTime':
+            const timeA = parseInt(a.dataset.time);
+            const timeB = parseInt(b.dataset.time);
+            return timeA - timeB;
+          default:
+            return 0;
+        }
+      });
+      
+      grid.innerHTML = '';
+      recipes.forEach(recipe => grid.appendChild(recipe));
+    }
+    
+    // Modal functionality
+    const newCollectionBtn = document.getElementById('newCollectionBtn');
+    const modal = document.getElementById('newCollectionModal');
+    const closeModal = document.querySelector('.close-modal');
+    const cancelModal = document.getElementById('cancelModal');
+    
+    newCollectionBtn.addEventListener('click', () => {
+      modal.classList.add('active');
+    });
+    
+    closeModal.addEventListener('click', () => {
+      modal.classList.remove('active');
+    });
+    
+    cancelModal.addEventListener('click', () => {
+      modal.classList.remove('active');
+    });
+    
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('active');
+      }
+    });
+    
+    // Icon picker
+    const iconOptions = document.querySelectorAll('.icon-option');
+    iconOptions.forEach(icon => {
+      icon.addEventListener('click', () => {
+        iconOptions.forEach(i => i.classList.remove('active'));
+        icon.classList.add('active');
+      });
+    });
+    
+    // Tooltips initialization
+    const tooltips = document.querySelectorAll('[data-tooltip]');
+    
+    // Heart animation on click
+    const hearts = document.querySelectorAll('.favorite-heart');
+    hearts.forEach(heart => {
+      heart.addEventListener('click', (e) => {
+        e.stopPropagation();
+        heart.style.animation = 'heartBeat 0.5s ease-in-out';
+        setTimeout(() => {
+          heart.style.animation = '';
+        }, 500);
+      });
+    });
+    
+    // Collection cards click
+    const collectionCards = document.querySelectorAll('.collection-card');
+    collectionCards.forEach(card => {
+      card.addEventListener('click', () => {
+        collectionCards.forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+      });
+    });
+    
+    // Load more button
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    loadMoreBtn.addEventListener('click', () => {
+      loadMoreBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+      setTimeout(() => {
+        loadMoreBtn.innerHTML = '<i class="fas fa-spinner"></i> Load More';
+        // In production, this would load more recipes
+      }, 1500);
+    });
+    
+    // Quick action buttons
+    document.getElementById('selectAllBtn').addEventListener('click', () => {
+      const recipes = document.querySelectorAll('.recipe-card');
+      recipes.forEach(recipe => {
+        recipe.style.opacity = '0.7';
+        recipe.style.border = '2px solid #ff6b6b';
+      });
+      setTimeout(() => {
+        recipes.forEach(recipe => {
+          recipe.style.opacity = '1';
+          recipe.style.border = 'none';
+        });
+      }, 2000);
+    });
+    
+    document.getElementById('shareSelectedBtn').addEventListener('click', () => {
+      alert('Share feature coming soon!');
+    });
+    
+    document.getElementById('addToPlanBtn').addEventListener('click', () => {
+      window.location.href = 'meal-planner.html';
+    });
+    
+    document.getElementById('printBtn').addEventListener('click', () => {
+      window.print();
+    });
+  </script>
+
+  <style>
+    /* Additional styles for new elements */
+    .stats-widget {
+      background: linear-gradient(135deg, #fff5f5, #fff);
+    }
+    
+    .stats-list {
+      margin-top: 1rem;
+    }
+    
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #f0eae4;
+    }
+    
+    .stat-item:last-child {
+      border-bottom: none;
+    }
+    
+    .stat-label {
+      color: #5f4e3c;
+    }
+    
+    .stat-value {
+      font-weight: 700;
+      color: #2d3e2c;
+    }
+    
+    .collections-list {
+      margin-top: 0.5rem;
+    }
+    
+    .collection-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .collection-item:hover {
+      background: #f5f0ea;
+    }
+    
+    .collection-item i {
+      color: #ff6b6b;
+      margin-right: 0.5rem;
+    }
+    
+    .quick-filters {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .filter-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+    }
+    
+    .filter-checkbox input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #ff6b6b;
+    }
+    
+    .tag-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      margin-top: 0.5rem;
+    }
+    
+    .tag {
+      color: #ff6b6b;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .tag:hover {
+      transform: scale(1.1);
+      color: #2d3e2c;
+    }
+    
+    .sort-bar {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1rem 0;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #f0eae4;
+    }
+    
+    .sort-option {
+      background: none;
+      border: none;
+      padding: 0.3rem 0.8rem;
+      cursor: pointer;
+      border-radius: 20px;
+      color: #5f4e3c;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    
+    .sort-option:hover {
+      background: #f0eae4;
+    }
+    
+    .sort-option.active {
+      background: #ff6b6b;
+      color: white;
+    }
+    
+    .cooked-badge {
+      font-size: 0.8rem;
+      color: #6b8c5c;
+    }
+    
+    .icon-picker {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .icon-option {
+      width: 50px;
+      height: 50px;
+      border-radius: 15px;
+      border: 2px solid #f0eae4;
+      background: white;
+      cursor: pointer;
+      font-size: 1.3rem;
+      color: #5f4e3c;
+      transition: all 0.3s;
+    }
+    
+    .icon-option:hover {
+      border-color: #ff6b6b;
+      transform: scale(1.1);
+    }
+    
+    .icon-option.active {
+      background: #ff6b6b;
+      border-color: #ff6b6b;
+      color: white;
+    }
+    
+    .compact-view {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    
+    .compact-view .recipe-card-image {
+      height: 150px;
+    }
+    
+    .compact-view .recipe-card-meta {
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    
+    .compact-view .recipe-card-actions {
+      justify-content: center;
+    }
+    
+    .compact-view .cooked-badge {
+      display: none;
+    }
+    
+    /* Print styles */
+    @media print {
+      .sidebar, .favorites-controls, .quick-actions, .collections-section, 
+      .favorites-stats, footer, .sort-bar, .load-more {
+        display: none !important;
+      }
+      
+      .favorites-grid {
+        display: block;
+      }
+      
+      .recipe-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        border: 1px solid #ddd;
+        margin-bottom: 1rem;
+      }
+    }
+  </style>
 </body>
 </html>

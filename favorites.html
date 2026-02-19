@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Favorites · Recipe Hub</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <header>
+    <nav class="main-nav">
+      <div class="nav-brand">
+        <h1>RECIPE HUB</h1>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Search</a></li>
+        <li><a href="favorites.html" class="active">Favorites</a></li>
+        <li><a href="shopping-list.html">Shopping List</a></li>
+        <li><a href="meal-planner.html">Meal Planner</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="app-container">
+    <aside class="sidebar">
+      <div id="ingredient-form-container"></div>
+      <div id="filters-widget"></div>
+      <div id="timer-widget"></div>
+    </aside>
+
+    <main id="app" class="favorites-page">
+      <div class="page-header">
+        <h2><i class="fas fa-heart" style="color: #ff6b6b;"></i> My Favorite Recipes</h2>
+        <div class="header-actions">
+          <button class="btn btn-outline" id="sortFavorites"><i class="fas fa-sort"></i> Sort</button>
+          <button class="btn btn-outline" id="exportFavorites"><i class="fas fa-download"></i> Export</button>
+        </div>
+      </div>
+
+      <div class="favorites-controls">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" id="searchFavorites" placeholder="Search favorites...">
+        </div>
+        <div class="category-filters">
+          <button class="category-chip active" data-category="all">All</button>
+          <button class="category-chip" data-category="breakfast">Breakfast</button>
+          <button class="category-chip" data-category="lunch">Lunch</button>
+          <button class="category-chip" data-category="dinner">Dinner</button>
+          <button class="category-chip" data-category="dessert">Dessert</button>
+          <button class="category-chip" data-category="vegetarian">Vegetarian</button>
+        </div>
+      </div>
+
+      <div class="favorites-grid" id="favoritesGrid">
+        <!-- Favorite recipe cards will be inserted here -->
+      </div>
+
+      <div class="empty-state" id="emptyFavorites" style="display: none;">
+        <i class="far fa-heart"></i>
+        <p>You haven't added any favorites yet</p>
+        <a href="index.html" class="btn btn-primary">Browse Recipes</a>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 Recipe Hub</p>
+  </footer>
+
+  <script type="module" src="js/favorites.js"></script>
+</body>
+</html>

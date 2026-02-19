@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shopping List · Recipe Hub</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <!-- Font Awesome for icons (optional but recommended) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <header>
+    <nav class="main-nav">
+      <div class="nav-brand">
+        <h1>RECIPE HUB</h1>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Search</a></li>
+        <li><a href="favorites.html">Favorites</a></li>
+        <li><a href="shopping-list.html" class="active">Shopping List</a></li>
+        <li><a href="meal-planner.html">Meal Planner</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="app-container">
+    <aside class="sidebar">
+      <div id="ingredient-form-container"></div>
+      <div id="filters-widget"></div>
+      <div id="timer-widget"></div>
+    </aside>
+
+    <main id="app" class="shopping-list-page">
+      <div class="page-header">
+        <h2><i class="fas fa-shopping-basket"></i> Shopping List</h2>
+        <div class="header-actions">
+          <button class="btn btn-primary" id="addItemBtn"><i class="fas fa-plus"></i> Add Item</button>
+          <button class="btn btn-outline" id="clearCheckedBtn"><i class="fas fa-check-double"></i> Clear Checked</button>
+        </div>
+      </div>
+
+      <div class="shopping-container">
+        <div class="shopping-controls">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchItems" placeholder="Search in list...">
+          </div>
+          <div class="filter-tabs">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="pending">Pending</button>
+            <button class="filter-btn" data-filter="completed">Completed</button>
+          </div>
+        </div>
+
+        <div class="shopping-list-container">
+          <ul class="shopping-list" id="shoppingList">
+            <!-- Dynamic items will be added here -->
+          </ul>
+          <div class="empty-state" id="emptyState">
+            <i class="fas fa-shopping-cart"></i>
+            <p>Your shopping list is empty</p>
+            <button class="btn btn-primary" id="emptyAddBtn">Add your first item</button>
+          </div>
+        </div>
+
+        <div class="shopping-summary">
+          <span><span id="totalItems">0</span> items</span>
+          <span><span id="checkedItems">0</span> checked</span>
+          <button class="btn-link" id="clearAllBtn"><i class="fas fa-trash"></i> Clear all</button>
+        </div>
+      </div>
+
+      <!-- Add Item Modal (hidden by default) -->
+      <div class="modal" id="addItemModal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>Add to Shopping List</h3>
+            <button class="close-modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <form id="addItemForm">
+              <div class="form-group">
+                <label for="itemName">Item name</label>
+                <input type="text" id="itemName" placeholder="e.g., Tomatoes, Chicken..." required>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="itemQuantity">Quantity</label>
+                  <input type="text" id="itemQuantity" placeholder="2">
+                </div>
+                <div class="form-group">
+                  <label for="itemUnit">Unit</label>
+                  <select id="itemUnit">
+                    <option value="pcs">pieces</option>
+                    <option value="kg">kg</option>
+                    <option value="g">g</option>
+                    <option value="ml">ml</option>
+                    <option value="cup">cups</option>
+                    <option value="tbsp">tbsp</option>
+                    <option value="tsp">tsp</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="itemCategory">Category</label>
+                <select id="itemCategory">
+                  <option value="produce">Produce</option>
+                  <option value="dairy">Dairy</option>
+                  <option value="meat">Meat & Poultry</option>
+                  <option value="seafood">Seafood</option>
+                  <option value="bakery">Bakery</option>
+                  <option value="pantry">Pantry</option>
+                  <option value="frozen">Frozen</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="itemNotes">Notes (optional)</label>
+                <input type="text" id="itemNotes" placeholder="e.g., organic, ripe...">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-outline" id="cancelModal">Cancel</button>
+            <button class="btn btn-primary" id="saveItem">Add to list</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 Recipe Hub</p>
+  </footer>
+
+  <script type="module" src="js/shopping-list.js"></script>
+</body>
+</html>
